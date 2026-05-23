@@ -2,14 +2,14 @@
   <div class="language-switcher" ref="switcherRef">
     <button class="switcher-trigger" @click="toggleDropdown">
       {{ currentLabel }}
-      <span class="caret">{{ open ? '▲' : '▼' }}</span>
+      <span class="caret">{{ open? '▲': '▼' }}</span>
     </button>
     <ul v-if="open" class="switcher-dropdown">
       <li
         v-for="loc in availableLocales"
-        :key="loc.key"
+:key="loc.key"
         class="switcher-option"
-        :class="{ active: loc.key === locale }"
+:class="{ active: loc.key === locale }"
         @click="switchLocale(loc.key)"
       >
         {{ loc.label }}
@@ -29,11 +29,11 @@ const switcherRef = ref(null)
 
 const currentLabel = computed(() => {
   const found = availableLocales.find(l => l.key === locale.value)
-  return found ? found.label : locale.value
+  return found? found.label: locale.value
 })
 
 const toggleDropdown = () => {
-  open.value = !open.value
+  open.value =!open.value
 }
 
 const switchLocale = (key) => {
@@ -44,7 +44,7 @@ const switchLocale = (key) => {
 }
 
 const onClickOutside = (e) => {
-  if (switcherRef.value && !switcherRef.value.contains(e.target)) {
+  if (switcherRef.value &&!switcherRef.value.contains(e.target)) {
     open.value = false
   }
 }

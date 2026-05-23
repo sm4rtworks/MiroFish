@@ -20,12 +20,12 @@
           <div class="sections-list">
             <div 
               v-for="(section, idx) in reportOutline.sections" 
-              :key="idx"
+:key="idx"
               class="report-section-item"
-              :class="{ 
+:class="{ 
                 'is-active': currentSectionIndex === idx + 1,
                 'is-completed': isSectionCompleted(idx + 1),
-                'is-pending': !isSectionCompleted(idx + 1) && currentSectionIndex !== idx + 1
+                'is-pending':!isSectionCompleted(idx + 1) && currentSectionIndex!== idx + 1
               }"
             >
               <div class="section-header-row" @click="toggleSectionCollapse(idx)" :class="{ 'clickable': isSectionCompleted(idx + 1) }">
@@ -34,7 +34,7 @@
                 <svg 
                   v-if="isSectionCompleted(idx + 1)" 
                   class="collapse-icon" 
-                  :class="{ 'is-collapsed': collapsedSections.has(idx) }"
+:class="{ 'is-collapsed': collapsedSections.has(idx) }"
                   viewBox="0 0 24 24" 
                   width="20" 
                   height="20" 
@@ -108,9 +108,9 @@
           <div class="workflow-steps" v-if="workflowSteps.length > 0">
             <div
               v-for="(step, sidx) in workflowSteps"
-              :key="step.key"
+:key="step.key"
               class="wf-step"
-              :class="`wf-step--${step.status}`"
+:class="`wf-step--${step.status}`"
             >
               <div class="wf-step-connector">
                 <div class="wf-step-dot"></div>
@@ -127,7 +127,7 @@
             </div>
           </div>
 
-          <!-- Next Step Button - 在完成后显示 -->
+          <!-- Next Step Button - -->
           <button v-if="isComplete" class="next-step-btn" @click="goToInteraction">
             <span>{{ $t('step4.goToInteraction') }}</span>
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
@@ -143,9 +143,9 @@
           <TransitionGroup name="timeline-item">
             <div 
               v-for="(log, idx) in displayLogs" 
-              :key="log.timestamp + '-' + idx"
+:key="log.timestamp + '-' + idx"
               class="timeline-item"
-              :class="getTimelineItemClass(log, idx, displayLogs.length)"
+:class="getTimelineItemClass(log, idx, displayLogs.length)"
             >
               <!-- Timeline Connector -->
               <div class="timeline-connector">
@@ -194,7 +194,7 @@
                     </div>
                   </template>
                   
-                  <!-- Section Content Generated (内容生成完成，但整个章节可能还没完成) -->
+                  <!-- Section Content Generated (content，) -->
                   <template v-if="log.action === 'section_content'">
                     <div class="section-tag content-ready">
                       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
@@ -205,7 +205,7 @@
                     </div>
                   </template>
 
-                  <!-- Section Complete (章节生成完成) -->
+                  <!-- Section Complete () -->
                   <template v-if="log.action === 'section_complete'">
                     <div class="section-tag completed">
                       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
@@ -309,13 +309,13 @@
                     <div class="llm-meta">
                       <span class="meta-tag">Iteration {{ log.details?.iteration }}</span>
                       <span class="meta-tag" :class="{ active: log.details?.has_tool_calls }">
-                        Tools: {{ log.details?.has_tool_calls ? 'Yes' : 'No' }}
+                        Tools: {{ log.details?.has_tool_calls? 'Yes': 'No' }}
                       </span>
                       <span class="meta-tag" :class="{ active: log.details?.has_final_answer, 'final-answer': log.details?.has_final_answer }">
-                        Final: {{ log.details?.has_final_answer ? 'Yes' : 'No' }}
+                        Final: {{ log.details?.has_final_answer? 'Yes': 'No' }}
                       </span>
                     </div>
-                    <!-- 当是最终答案时，显示特殊提示 -->
+                    <!-- ， -->
                     <div v-if="log.details?.has_final_answer" class="final-answer-hint">
                       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="20 6 9 17 4 12"></polyline>
@@ -347,17 +347,17 @@
                   <div class="footer-actions">
                     <!-- Tool Call: Show/Hide Params -->
                     <button v-if="log.action === 'tool_call' && log.details?.parameters" class="action-btn" @click.stop="toggleLogExpand(log)">
-                      {{ expandedLogs.has(log.timestamp) ? 'Hide Params' : 'Show Params' }}
+                      {{ expandedLogs.has(log.timestamp)? 'Hide Params': 'Show Params' }}
                     </button>
                     
                     <!-- Tool Result: Raw/Structured View -->
                     <button v-if="log.action === 'tool_result'" class="action-btn" @click.stop="toggleRawResult(log.timestamp, $event)">
-                      {{ showRawResult[log.timestamp] ? 'Structured View' : 'Raw Output' }}
+                      {{ showRawResult[log.timestamp]? 'Structured View': 'Raw Output' }}
                     </button>
                     
                     <!-- LLM Response: Show/Hide Response -->
                     <button v-if="log.action === 'llm_response' && log.details?.response" class="action-btn" @click.stop="toggleLogExpand(log)">
-                      {{ expandedLogs.has(log.timestamp) ? 'Hide Response' : 'Show Response' }}
+                      {{ expandedLogs.has(log.timestamp)? 'Hide Response': 'Show Response' }}
                     </button>
                   </div>
                 </div>
@@ -366,7 +366,7 @@
           </TransitionGroup>
 
           <!-- Empty State -->
-          <div v-if="agentLogs.length === 0 && !isComplete" class="workflow-empty">
+          <div v-if="agentLogs.length === 0 &&!isComplete" class="workflow-empty">
             <div class="empty-pulse"></div>
             <span>Waiting for agent activity...</span>
           </div>
@@ -433,22 +433,22 @@ const showRawResult = reactive({})
 
 // Toggle functions
 const toggleRawResult = (timestamp, event) => {
-  // 保存按钮相对于视口的位置
+  // 
   const button = event?.target
   const buttonRect = button?.getBoundingClientRect()
   const buttonTopBeforeToggle = buttonRect?.top
   
-  // 切换状态
-  showRawResult[timestamp] = !showRawResult[timestamp]
+  // status
+  showRawResult[timestamp] =!showRawResult[timestamp]
   
-  // 等待 DOM 更新后，调整滚动位置以保持按钮在相同位置
-  if (button && buttonTopBeforeToggle !== undefined && rightPanel.value) {
+  // waiting DOM update，
+  if (button && buttonTopBeforeToggle!== undefined && rightPanel.value) {
     nextTick(() => {
       const newButtonRect = button.getBoundingClientRect()
       const buttonTopAfterToggle = newButtonRect.top
       const scrollDelta = buttonTopAfterToggle - buttonTopBeforeToggle
       
-      // 调整滚动位置
+      // 
       rightPanel.value.scrollTop += scrollDelta
     })
   }
@@ -466,7 +466,7 @@ const toggleSectionContent = (idx) => {
 }
 
 const toggleSectionCollapse = (idx) => {
-  // 只有已完成的章节才能折叠
+  // completed
   if (!generatedSections.value[idx + 1]) return
   const newSet = new Set(collapsedSections.value)
   if (newSet.has(idx)) {
@@ -489,7 +489,7 @@ const toggleLogExpand = (log) => {
 
 const isLogCollapsed = (log) => {
   if (['tool_call', 'tool_result', 'llm_response'].includes(log.action)) {
-    return !expandedLogs.value.has(log.timestamp)
+    return!expandedLogs.value.has(log.timestamp)
   }
   return false
 }
@@ -499,32 +499,32 @@ const toolConfig = {
   'insight_forge': {
     name: 'Deep Insight',
     color: 'purple',
-    icon: 'lightbulb' // 灯泡图标 - 代表洞察
+    icon: 'lightbulb' // - 
   },
   'panorama_search': {
     name: 'Panorama Search',
     color: 'blue',
-    icon: 'globe' // 地球图标 - 代表全景搜索
+    icon: 'globe' // - 
   },
   'interview_agents': {
     name: 'Agent Interview',
     color: 'green',
-    icon: 'users' // 用户图标 - 代表对话
+    icon: 'users' // - 
   },
   'quick_search': {
     name: 'Quick Search',
     color: 'orange',
-    icon: 'zap' // 闪电图标 - 代表快速
+    icon: 'zap' // - 
   },
   'get_graph_statistics': {
     name: 'Graph Stats',
     color: 'cyan',
-    icon: 'chart' // 图表图标 - 代表统计
+    icon: 'chart' // - statistics
   },
   'get_entities_by_type': {
     name: 'Entity Query',
     color: 'pink',
-    icon: 'database' // 数据库图标 - 代表实体
+    icon: 'database' // database - 
   }
 }
 
@@ -553,60 +553,60 @@ const parseInsightForge = (text) => {
   }
   
   try {
-    // 提取分析问题
-    const queryMatch = text.match(/分析问题:\s*(.+?)(?:\n|$)/)
+    // Query
+    const queryMatch = text.match(/(?:User Query|Query)\s*:\s*(.+?)(?:\n|$)/i)
     if (queryMatch) result.query = queryMatch[1].trim()
     
-    // 提取预测场景
-    const reqMatch = text.match(/预测场景:\s*(.+?)(?:\n|$)/)
+    // Simulation requirement
+    const reqMatch = text.match(/(?:Simulation Requirement|Prediction Requirement|Requirement)\s*:\s*(.+?)(?:\n|$)/i)
     if (reqMatch) result.simulationRequirement = reqMatch[1].trim()
     
-    // 提取统计数据 - 匹配"相关预测事实: X条"格式
-    const factMatch = text.match(/相关预测事实:\s*(\d+)/)
-    const entityMatch = text.match(/涉及实体:\s*(\d+)/)
-    const relMatch = text.match(/关系链:\s*(\d+)/)
+    // Stats like "Facts: X", "Entities: X", "Relationships: X"
+    const factMatch = text.match(/Facts?\s*:\s*(\d+)/i)
+    const entityMatch = text.match(/Entities?\s*:\s*(\d+)/i)
+    const relMatch = text.match(/Relationships?\s*:\s*(\d+)/i)
     if (factMatch) result.stats.facts = parseInt(factMatch[1])
     if (entityMatch) result.stats.entities = parseInt(entityMatch[1])
     if (relMatch) result.stats.relationships = parseInt(relMatch[1])
     
-    // 提取子问题 - 完整提取，不限制数量
-    const subQSection = text.match(/### 分析的子问题\n([\s\S]*?)(?=\n###|$)/)
+    // Sub-queries
+    const subQSection = text.match(/###\s*(?:Sub\s*Queries?|Sub-queries?)\s*\n([\s\S]*?)(?=\n###|$)/i)
     if (subQSection) {
       const lines = subQSection[1].split('\n').filter(l => l.match(/^\d+\./))
       result.subQueries = lines.map(l => l.replace(/^\d+\.\s*/, '').trim()).filter(Boolean)
     }
     
-    // 提取关键事实 - 完整提取，不限制数量
-    const factsSection = text.match(/### 【关键事实】[\s\S]*?\n([\s\S]*?)(?=\n###|$)/)
+    // Facts section
+    const factsSection = text.match(/###\s*(?:Core\s*)?Facts?\s*\n([\s\S]*?)(?=\n###|$)/i)
     if (factsSection) {
       const lines = factsSection[1].split('\n').filter(l => l.match(/^\d+\./))
       result.facts = lines.map(l => {
         const match = l.match(/^\d+\.\s*"?(.+?)"?\s*$/)
-        return match ? match[1].replace(/^"|"$/g, '').trim() : l.replace(/^\d+\.\s*/, '').trim()
+        return match? match[1].replace(/^"|"$/g, '').trim(): l.replace(/^\d+\.\s*/, '').trim()
       }).filter(Boolean)
     }
     
-    // 提取核心实体 - 完整提取，包含摘要和相关事实数
-    const entitySection = text.match(/### 【核心实体】\n([\s\S]*?)(?=\n###|$)/)
+    // Entities section
+    const entitySection = text.match(/###\s*(?:Core\s*)?Entities?\s*\n([\s\S]*?)(?=\n###|$)/i)
     if (entitySection) {
       const entityText = entitySection[1]
-      // 按 "- **" 分割实体块
+      // "- **" 
       const entityBlocks = entityText.split(/\n(?=- \*\*)/).filter(b => b.trim().startsWith('- **'))
       result.entities = entityBlocks.map(block => {
         const nameMatch = block.match(/^-\s*\*\*(.+?)\*\*\s*\((.+?)\)/)
-        const summaryMatch = block.match(/摘要:\s*"?(.+?)"?(?:\n|$)/)
-        const relatedMatch = block.match(/相关事实:\s*(\d+)/)
+        const summaryMatch = block.match(/Summary\s*:\s*"?(.+?)"?(?:\n|$)/i)
+        const relatedMatch = block.match(/Related\s*Facts?\s*:\s*(\d+)/i)
         return {
-          name: nameMatch ? nameMatch[1].trim() : '',
-          type: nameMatch ? nameMatch[2].trim() : '',
-          summary: summaryMatch ? summaryMatch[1].trim() : '',
-          relatedFactsCount: relatedMatch ? parseInt(relatedMatch[1]) : 0
+          name: nameMatch? nameMatch[1].trim(): '',
+          type: nameMatch? nameMatch[2].trim(): '',
+          summary: summaryMatch? summaryMatch[1].trim(): '',
+          relatedFactsCount: relatedMatch? parseInt(relatedMatch[1]): 0
         }
       }).filter(e => e.name)
     }
     
-    // 提取关系链 - 完整提取，不限制数量
-    const relSection = text.match(/### 【关系链】\n([\s\S]*?)(?=\n###|$)/)
+    // Relations section
+    const relSection = text.match(/###\s*(?:Core\s*)?(?:Relations?|Relationships?)\s*\n([\s\S]*?)(?=\n###|$)/i)
     if (relSection) {
       const lines = relSection[1].split('\n').filter(l => l.trim().startsWith('-'))
       result.relations = lines.map(l => {
@@ -634,33 +634,33 @@ const parsePanorama = (text) => {
   }
   
   try {
-    // 提取查询
-    const queryMatch = text.match(/查询:\s*(.+?)(?:\n|$)/)
+    // query
+    const queryMatch = text.match(/query:\s*(.+?)(?:\n|$)/)
     if (queryMatch) result.query = queryMatch[1].trim()
     
-    // 提取统计数据
-    const nodesMatch = text.match(/总节点数:\s*(\d+)/)
-    const edgesMatch = text.match(/总边数:\s*(\d+)/)
-    const activeMatch = text.match(/当前有效事实:\s*(\d+)/)
-    const histMatch = text.match(/历史\/过期事实:\s*(\d+)/)
+    // statisticsdata
+    const nodesMatch = text.match(/node:\s*(\d+)/)
+    const edgesMatch = text.match(/edge:\s*(\d+)/)
+    const activeMatch = text.match(/:\s*(\d+)/)
+    const histMatch = text.match(/\/:\s*(\d+)/)
     if (nodesMatch) result.stats.nodes = parseInt(nodesMatch[1])
     if (edgesMatch) result.stats.edges = parseInt(edgesMatch[1])
     if (activeMatch) result.stats.activeFacts = parseInt(activeMatch[1])
     if (histMatch) result.stats.historicalFacts = parseInt(histMatch[1])
     
-    // 提取当前有效事实 - 完整提取，不限制数量
-    const activeSection = text.match(/### 【当前有效事实】[\s\S]*?\n([\s\S]*?)(?=\n###|$)/)
+    // - ，count
+    const activeSection = text.match(/### 【】[\s\S]*?\n([\s\S]*?)(?=\n###|$)/)
     if (activeSection) {
       const lines = activeSection[1].split('\n').filter(l => l.match(/^\d+\./))
       result.activeFacts = lines.map(l => {
-        // 移除编号和引号
+        // 
         const factText = l.replace(/^\d+\.\s*/, '').replace(/^"|"$/g, '').trim()
         return factText
       }).filter(Boolean)
     }
     
-    // 提取历史/过期事实 - 完整提取，不限制数量
-    const histSection = text.match(/### 【历史\/过期事实】[\s\S]*?\n([\s\S]*?)(?=\n###|$)/)
+    // / - ，count
+    const histSection = text.match(/### 【\/】[\s\S]*?\n([\s\S]*?)(?=\n###|$)/)
     if (histSection) {
       const lines = histSection[1].split('\n').filter(l => l.match(/^\d+\./))
       result.historicalFacts = lines.map(l => {
@@ -669,8 +669,8 @@ const parsePanorama = (text) => {
       }).filter(Boolean)
     }
     
-    // 提取涉及实体 - 完整提取，不限制数量
-    const entitySection = text.match(/### 【涉及实体】\n([\s\S]*?)(?=\n###|$)/)
+    // - ，count
+    const entitySection = text.match(/### 【】\n([\s\S]*?)(?=\n###|$)/)
     if (entitySection) {
       const lines = entitySection[1].split('\n').filter(l => l.trim().startsWith('-'))
       result.entities = lines.map(l => {
@@ -698,25 +698,25 @@ const parseInterview = (text) => {
   }
   
   try {
-    // 提取采访主题
-    const topicMatch = text.match(/\*\*采访主题:\*\*\s*(.+?)(?:\n|$)/)
+    // 
+    const topicMatch = text.match(/\*\*:\*\*\s*(.+?)(?:\n|$)/)
     if (topicMatch) result.topic = topicMatch[1].trim()
     
-    // 提取采访人数（如 "5 / 9 位模拟Agent"）
-    const countMatch = text.match(/\*\*采访人数:\*\*\s*(\d+)\s*\/\s*(\d+)/)
+    // （ "5 / 9 simulationAgent"）
+    const countMatch = text.match(/\*\*:\*\*\s*(\d+)\s*\/\s*(\d+)/)
     if (countMatch) {
       result.successCount = parseInt(countMatch[1])
       result.totalCount = parseInt(countMatch[2])
       result.agentCount = `${countMatch[1]} / ${countMatch[2]}`
     }
     
-    // 提取采访对象选择理由
-    const reasonMatch = text.match(/### 采访对象选择理由\n([\s\S]*?)(?=\n---\n|\n### 采访实录)/)
+    // 
+    const reasonMatch = text.match(/### \n([\s\S]*?)(?=\n---\n|\n### )/)
     if (reasonMatch) {
       result.selectionReason = reasonMatch[1].trim()
     }
     
-    // 解析每个人的选择理由
+    // 
     const parseIndividualReasons = (reasonText) => {
       const reasons = {}
       if (!reasonText) return reasons
@@ -730,26 +730,26 @@ const parseInterview = (text) => {
         let name = null
         let reasonStart = null
         
-        // 格式1: 数字. **名字（index=X）**：理由
-        // 例如: 1. **校友_345（index=1）**：作为武大校友...
+        // 1:. **（index=X）**：
+        //: 1. **_345（index=1）**：...
         headerMatch = line.match(/^\d+\.\s*\*\*([^*（(]+)(?:[（(]index\s*=?\s*\d+[)）])?\*\*[：:]\s*(.*)/)
         if (headerMatch) {
           name = headerMatch[1].trim()
           reasonStart = headerMatch[2]
         }
         
-        // 格式2: - 选择名字（index X）：理由
-        // 例如: - 选择家长_601（index 0）：作为家长群体代表...
+        // 2: - （index X）：
+        //: - _601（index 0）：swarm...
         if (!headerMatch) {
-          headerMatch = line.match(/^-\s*选择([^（(]+)(?:[（(]index\s*=?\s*\d+[)）])?[：:]\s*(.*)/)
+          headerMatch = line.match(/^-\s*([^（(]+)(?:[（(]index\s*=?\s*\d+[)）])?[：:]\s*(.*)/)
           if (headerMatch) {
             name = headerMatch[1].trim()
             reasonStart = headerMatch[2]
           }
         }
         
-        // 格式3: - **名字（index X）**：理由
-        // 例如: - **家长_601（index 0）**：作为家长群体代表...
+        // 3: - **（index X）**：
+        //: - **_601（index 0）**：swarm...
         if (!headerMatch) {
           headerMatch = line.match(/^-\s*\*\*([^*（(]+)(?:[（(]index\s*=?\s*\d+[)）])?\*\*[：:]\s*(.*)/)
           if (headerMatch) {
@@ -759,20 +759,20 @@ const parseInterview = (text) => {
         }
         
         if (name) {
-          // 保存上一个人的理由
+          // 
           if (currentName && currentReason.length > 0) {
             reasons[currentName] = currentReason.join(' ').trim()
           }
-          // 开始新的人
+          // 
           currentName = name
-          currentReason = reasonStart ? [reasonStart.trim()] : []
-        } else if (currentName && line.trim() && !line.match(/^未选|^综上|^最终选择/)) {
-          // 理由的续行（排除结尾总结段落）
+          currentReason = reasonStart? [reasonStart.trim()]: []
+        } else if (currentName && line.trim() &&!line.match(/^|^|^/)) {
+          // （）
           currentReason.push(line.trim())
         }
       }
       
-      // 保存最后一个人的理由
+      // 
       if (currentName && currentReason.length > 0) {
         reasons[currentName] = currentReason.join(' ').trim()
       }
@@ -782,8 +782,8 @@ const parseInterview = (text) => {
     
     const individualReasons = parseIndividualReasons(result.selectionReason)
     
-    // 提取每个采访记录
-    const interviewBlocks = text.split(/#### 采访 #\d+:/).slice(1)
+    // 
+    const interviewBlocks = text.split(/#### #\d+:/).slice(1)
     
     interviewBlocks.forEach((block, index) => {
       const interview = {
@@ -799,50 +799,50 @@ const parseInterview = (text) => {
         quotes: []
       }
       
-      // 提取标题（如 "学生"、"教育从业者" 等）
+      // （ ""、"" ）
       const titleMatch = block.match(/^(.+?)\n/)
       if (titleMatch) interview.title = titleMatch[1].trim()
       
-      // 提取姓名和角色
+      // 
       const nameRoleMatch = block.match(/\*\*(.+?)\*\*\s*\((.+?)\)/)
       if (nameRoleMatch) {
         interview.name = nameRoleMatch[1].trim()
         interview.role = nameRoleMatch[2].trim()
-        // 设置该人的选择理由
+        // 
         interview.selectionReason = individualReasons[interview.name] || ''
       }
       
-      // 提取简介
-      const bioMatch = block.match(/_简介:\s*([\s\S]*?)_\n/)
+      // 
+      const bioMatch = block.match(/_:\s*([\s\S]*?)_\n/)
       if (bioMatch) {
         interview.bio = bioMatch[1].trim().replace(/\.\.\.$/, '...')
       }
       
-      // 提取问题列表
+      // list
       const qMatch = block.match(/\*\*Q:\*\*\s*([\s\S]*?)(?=\n\n\*\*A:\*\*|\*\*A:\*\*)/)
       if (qMatch) {
         const qText = qMatch[1].trim()
-        // 按数字编号分割问题
+        // 
         const questions = qText.split(/\n\d+\.\s+/).filter(q => q.trim())
         if (questions.length > 0) {
-          // 如果第一个问题前面有"1."，需要特殊处理
+          // "1."，
           const firstQ = qText.match(/^1\.\s+(.+)/)
           if (firstQ) {
-            interview.questions = [firstQ[1].trim(), ...questions.slice(1).map(q => q.trim())]
+            interview.questions = [firstQ[1].trim(),...questions.slice(1).map(q => q.trim())]
           } else {
             interview.questions = questions.map(q => q.trim())
           }
         }
       }
       
-      // 提取回答 - 分Twitter和Reddit
-      const answerMatch = block.match(/\*\*A:\*\*\s*([\s\S]*?)(?=\*\*关键引言|$)/)
+      // - TwitterReddit
+      const answerMatch = block.match(/\*\*A:\*\*\s*([\s\S]*?)(?=\*\*|$)/)
       if (answerMatch) {
         const answerText = answerMatch[1].trim()
         
-        // 分离Twitter和Reddit回答
-        const twitterMatch = answerText.match(/【Twitter平台回答】\n?([\s\S]*?)(?=【Reddit平台回答】|$)/)
-        const redditMatch = answerText.match(/【Reddit平台回答】\n?([\s\S]*?)$/)
+        // TwitterReddit
+        const twitterMatch = answerText.match(/【Twitterplatform】\n?([\s\S]*?)(?=【Redditplatform】|$)/)
+        const redditMatch = answerText.match(/【Redditplatform】\n?([\s\S]*?)$/)
         
         if (twitterMatch) {
           interview.twitterAnswer = twitterMatch[1].trim()
@@ -851,36 +851,36 @@ const parseInterview = (text) => {
           interview.redditAnswer = redditMatch[1].trim()
         }
         
-        // 平台回退逻辑（兼容旧格式：只有一个平台标记的情况）
+        // platform（：platform）
         if (!twitterMatch && redditMatch) {
-          // 只有 Reddit 回答，仅在非占位文本时复制为默认显示
-          if (interview.redditAnswer && interview.redditAnswer !== '（该平台未获得回复）') {
+          // Reddit ，default
+          if (interview.redditAnswer && interview.redditAnswer!== '（platform）') {
             interview.twitterAnswer = interview.redditAnswer
           }
-        } else if (twitterMatch && !redditMatch) {
-          if (interview.twitterAnswer && interview.twitterAnswer !== '（该平台未获得回复）') {
+        } else if (twitterMatch &&!redditMatch) {
+          if (interview.twitterAnswer && interview.twitterAnswer!== '（platform）') {
             interview.redditAnswer = interview.twitterAnswer
           }
-        } else if (!twitterMatch && !redditMatch) {
-          // 没有分平台标记（极旧格式），整体作为回答
+        } else if (!twitterMatch &&!redditMatch) {
+          // platform（），
           interview.twitterAnswer = answerText
         }
       }
       
-      // 提取关键引言（兼容多种引号格式）
-      const quotesMatch = block.match(/\*\*关键引言:\*\*\n([\s\S]*?)(?=\n---|\n####|$)/)
+      // （）
+      const quotesMatch = block.match(/\*\*:\*\*\n([\s\S]*?)(?=\n---|\n####|$)/)
       if (quotesMatch) {
         const quotesText = quotesMatch[1]
-        // 优先匹配 > "text" 格式
+        // > "text" 
         let quoteMatches = quotesText.match(/> "([^"]+)"/g)
-        // 回退：匹配 > "text" 或 > \u201Ctext\u201D（中文引号）
+        // ： > "text" > \u201Ctext\u201D（Chinese）
         if (!quoteMatches) {
           quoteMatches = quotesText.match(/> [\u201C""]([^\u201D""]+)[\u201D""]/g)
         }
         if (quoteMatches) {
           interview.quotes = quoteMatches
-            .map(q => q.replace(/^> [\u201C""]|[\u201D""]$/g, '').trim())
-            .filter(q => q)
+.map(q => q.replace(/^> [\u201C""]|[\u201D""]$/g, '').trim())
+.filter(q => q)
         }
       }
       
@@ -889,8 +889,8 @@ const parseInterview = (text) => {
       }
     })
     
-    // 提取采访摘要
-    const summaryMatch = text.match(/### 采访摘要与核心观点\n([\s\S]*?)$/)
+    // 
+    const summaryMatch = text.match(/### \n([\s\S]*?)$/)
     if (summaryMatch) {
       result.summary = summaryMatch[1].trim()
     }
@@ -911,23 +911,23 @@ const parseQuickSearch = (text) => {
   }
   
   try {
-    // 提取搜索查询
-    const queryMatch = text.match(/搜索查询:\s*(.+?)(?:\n|$)/)
+    // query
+    const queryMatch = text.match(/query:\s*(.+?)(?:\n|$)/)
     if (queryMatch) result.query = queryMatch[1].trim()
     
-    // 提取结果数量
-    const countMatch = text.match(/找到\s*(\d+)\s*条/)
+    // count
+    const countMatch = text.match(/\s*(\d+)\s*/)
     if (countMatch) result.count = parseInt(countMatch[1])
     
-    // 提取相关事实 - 完整提取，不限制数量
-    const factsSection = text.match(/### 相关事实:\n([\s\S]*)$/)
+    // - ，count
+    const factsSection = text.match(/###:\n([\s\S]*)$/)
     if (factsSection) {
       const lines = factsSection[1].split('\n').filter(l => l.match(/^\d+\./))
       result.facts = lines.map(l => l.replace(/^\d+\.\s*/, '').trim()).filter(Boolean)
     }
     
-    // 尝试提取边信息（如果有）
-    const edgesSection = text.match(/### 相关边:\n([\s\S]*?)(?=\n###|$)/)
+    // edge（）
+    const edgesSection = text.match(/### edge:\n([\s\S]*?)(?=\n###|$)/)
     if (edgesSection) {
       const lines = edgesSection[1].split('\n').filter(l => l.trim().startsWith('-'))
       result.edges = lines.map(l => {
@@ -939,8 +939,8 @@ const parseQuickSearch = (text) => {
       }).filter(Boolean)
     }
     
-    // 尝试提取节点信息（如果有）
-    const nodesSection = text.match(/### 相关节点:\n([\s\S]*?)(?=\n###|$)/)
+    // node（）
+    const nodesSection = text.match(/### node:\n([\s\S]*?)(?=\n###|$)/)
     if (nodesSection) {
       const lines = nodesSection[1].split('\n').filter(l => l.trim().startsWith('-'))
       result.nodes = lines.map(l => {
@@ -1048,7 +1048,7 @@ const InsightDisplay = {
             h('span', { class: 'panel-count' }, t('step4.totalCount', { count: props.result.facts.length }))
           ]),
           h('div', { class: 'facts-list' },
-            (expandedFacts.value ? props.result.facts : props.result.facts.slice(0, INITIAL_SHOW_COUNT)).map((fact, i) => 
+            (expandedFacts.value? props.result.facts: props.result.facts.slice(0, INITIAL_SHOW_COUNT)).map((fact, i) => 
               h('div', { class: 'fact-item', key: i }, [
                 h('span', { class: 'fact-number' }, i + 1),
                 h('div', { class: 'fact-content' }, fact)
@@ -1057,8 +1057,8 @@ const InsightDisplay = {
           ),
           props.result.facts.length > INITIAL_SHOW_COUNT && h('button', {
             class: 'expand-btn',
-            onClick: () => { expandedFacts.value = !expandedFacts.value }
-          }, expandedFacts.value ? t('step4.collapse') : t('step4.expandAll', { count: props.result.facts.length }))
+            onClick: () => { expandedFacts.value =!expandedFacts.value }
+          }, expandedFacts.value? t('step4.collapse'): t('step4.expandAll', { count: props.result.facts.length }))
         ]),
 
         // Entities Tab
@@ -1068,7 +1068,7 @@ const InsightDisplay = {
             h('span', { class: 'panel-count' }, t('step4.totalEntityCount', { count: props.result.entities.length }))
           ]),
           h('div', { class: 'entities-grid' },
-            (expandedEntities.value ? props.result.entities : props.result.entities.slice(0, 12)).map((entity, i) => 
+            (expandedEntities.value? props.result.entities: props.result.entities.slice(0, 12)).map((entity, i) => 
               h('div', { class: 'entity-tag', key: i, title: entity.summary || '' }, [
                 h('span', { class: 'entity-name' }, entity.name),
                 h('span', { class: 'entity-type' }, entity.type),
@@ -1078,8 +1078,8 @@ const InsightDisplay = {
           ),
           props.result.entities.length > 12 && h('button', {
             class: 'expand-btn',
-            onClick: () => { expandedEntities.value = !expandedEntities.value }
-          }, expandedEntities.value ? t('step4.collapse') : t('step4.expandAllEntities', { count: props.result.entities.length }))
+            onClick: () => { expandedEntities.value =!expandedEntities.value }
+          }, expandedEntities.value? t('step4.collapse'): t('step4.expandAllEntities', { count: props.result.entities.length }))
         ]),
 
         // Relations Tab
@@ -1089,7 +1089,7 @@ const InsightDisplay = {
             h('span', { class: 'panel-count' }, t('step4.totalCount', { count: props.result.relations.length }))
           ]),
           h('div', { class: 'relations-list' },
-            (expandedRelations.value ? props.result.relations : props.result.relations.slice(0, INITIAL_SHOW_COUNT)).map((rel, i) => 
+            (expandedRelations.value? props.result.relations: props.result.relations.slice(0, INITIAL_SHOW_COUNT)).map((rel, i) => 
               h('div', { class: 'relation-item', key: i }, [
                 h('span', { class: 'rel-source' }, rel.source),
                 h('span', { class: 'rel-arrow' }, [
@@ -1103,8 +1103,8 @@ const InsightDisplay = {
           ),
           props.result.relations.length > INITIAL_SHOW_COUNT && h('button', {
             class: 'expand-btn',
-            onClick: () => { expandedRelations.value = !expandedRelations.value }
-          }, expandedRelations.value ? t('step4.collapse') : t('step4.expandAll', { count: props.result.relations.length }))
+            onClick: () => { expandedRelations.value =!expandedRelations.value }
+          }, expandedRelations.value? t('step4.collapse'): t('step4.expandAll', { count: props.result.relations.length }))
         ]),
 
         // Sub-queries Tab
@@ -1204,18 +1204,18 @@ const PanoramaDisplay = {
             h('span', { class: 'panel-title' }, t('step4.panelActiveFacts')),
             h('span', { class: 'panel-count' }, t('step4.totalCount', { count: props.result.activeFacts.length }))
           ]),
-          props.result.activeFacts.length > 0 ? h('div', { class: 'facts-list' },
-            (expandedActive.value ? props.result.activeFacts : props.result.activeFacts.slice(0, INITIAL_SHOW_COUNT)).map((fact, i) => 
+          props.result.activeFacts.length > 0? h('div', { class: 'facts-list' },
+            (expandedActive.value? props.result.activeFacts: props.result.activeFacts.slice(0, INITIAL_SHOW_COUNT)).map((fact, i) => 
               h('div', { class: 'fact-item active', key: i }, [
                 h('span', { class: 'fact-number' }, i + 1),
                 h('div', { class: 'fact-content' }, fact)
               ])
             )
-          ) : h('div', { class: 'empty-state' }, t('step4.emptyActiveFacts')),
+          ): h('div', { class: 'empty-state' }, t('step4.emptyActiveFacts')),
           props.result.activeFacts.length > INITIAL_SHOW_COUNT && h('button', {
             class: 'expand-btn',
-            onClick: () => { expandedActive.value = !expandedActive.value }
-          }, expandedActive.value ? t('step4.collapse') : t('step4.expandAll', { count: props.result.activeFacts.length }))
+            onClick: () => { expandedActive.value =!expandedActive.value }
+          }, expandedActive.value? t('step4.collapse'): t('step4.expandAll', { count: props.result.activeFacts.length }))
         ]),
         
         // Historical Facts Tab
@@ -1224,12 +1224,12 @@ const PanoramaDisplay = {
             h('span', { class: 'panel-title' }, t('step4.panelHistoricalFacts')),
             h('span', { class: 'panel-count' }, t('step4.totalCount', { count: props.result.historicalFacts.length }))
           ]),
-          props.result.historicalFacts.length > 0 ? h('div', { class: 'facts-list' },
-            (expandedHistorical.value ? props.result.historicalFacts : props.result.historicalFacts.slice(0, INITIAL_SHOW_COUNT)).map((fact, i) => 
+          props.result.historicalFacts.length > 0? h('div', { class: 'facts-list' },
+            (expandedHistorical.value? props.result.historicalFacts: props.result.historicalFacts.slice(0, INITIAL_SHOW_COUNT)).map((fact, i) => 
               h('div', { class: 'fact-item historical', key: i }, [
                 h('span', { class: 'fact-number' }, i + 1),
                 h('div', { class: 'fact-content' }, [
-                  // 尝试提取时间信息 [time - time]
+                  // [time - time]
                   (() => {
                     const timeMatch = fact.match(/^\[(.+?)\]\s*(.*)$/)
                     if (timeMatch) {
@@ -1243,11 +1243,11 @@ const PanoramaDisplay = {
                 ])
               ])
             )
-          ) : h('div', { class: 'empty-state' }, t('step4.emptyHistoricalFacts')),
+          ): h('div', { class: 'empty-state' }, t('step4.emptyHistoricalFacts')),
           props.result.historicalFacts.length > INITIAL_SHOW_COUNT && h('button', {
             class: 'expand-btn',
-            onClick: () => { expandedHistorical.value = !expandedHistorical.value }
-          }, expandedHistorical.value ? t('step4.collapse') : t('step4.expandAll', { count: props.result.historicalFacts.length }))
+            onClick: () => { expandedHistorical.value =!expandedHistorical.value }
+          }, expandedHistorical.value? t('step4.collapse'): t('step4.expandAll', { count: props.result.historicalFacts.length }))
         ]),
         
         // Entities Tab
@@ -1256,18 +1256,18 @@ const PanoramaDisplay = {
             h('span', { class: 'panel-title' }, t('step4.panelEntities')),
             h('span', { class: 'panel-count' }, t('step4.totalEntityCount', { count: props.result.entities.length }))
           ]),
-          props.result.entities.length > 0 ? h('div', { class: 'entities-grid' },
-            (expandedEntities.value ? props.result.entities : props.result.entities.slice(0, 8)).map((entity, i) => 
+          props.result.entities.length > 0? h('div', { class: 'entities-grid' },
+            (expandedEntities.value? props.result.entities: props.result.entities.slice(0, 8)).map((entity, i) => 
               h('div', { class: 'entity-tag', key: i }, [
                 h('span', { class: 'entity-name' }, entity.name),
                 entity.type && h('span', { class: 'entity-type' }, entity.type)
               ])
             )
-          ) : h('div', { class: 'empty-state' }, t('step4.emptyEntities')),
+          ): h('div', { class: 'empty-state' }, t('step4.emptyEntities')),
           props.result.entities.length > 8 && h('button', {
             class: 'expand-btn',
-            onClick: () => { expandedEntities.value = !expandedEntities.value }
-          }, expandedEntities.value ? t('step4.collapse') : t('step4.expandAllEntities', { count: props.result.entities.length }))
+            onClick: () => { expandedEntities.value =!expandedEntities.value }
+          }, expandedEntities.value? t('step4.collapse'): t('step4.expandAllEntities', { count: props.result.entities.length }))
         ])
       ])
     ])
@@ -1296,16 +1296,16 @@ const InterviewDisplay = {
     
     const activeIndex = ref(0)
     const expandedAnswers = ref(new Set())
-    // 为每个问题-回答对维护独立的平台选择状态
+    // -platformstatus
     const platformTabs = reactive({}) // { 'agentIdx-qIdx': 'twitter' | 'reddit' }
     
-    // 获取某个问题的当前平台选择
+    // getplatform
     const getPlatformTab = (agentIdx, qIdx) => {
       const key = `${agentIdx}-${qIdx}`
       return platformTabs[key] || 'twitter'
     }
     
-    // 设置某个问题的平台选择
+    // platform
     const setPlatformTab = (agentIdx, qIdx, platform) => {
       const key = `${agentIdx}-${qIdx}`
       platformTabs[key] = platform
@@ -1327,27 +1327,27 @@ const InterviewDisplay = {
       return text.substring(0, 400) + '...'
     }
     
-    // 检查是否为平台占位文本
+    // platform
     const isPlaceholderText = (text) => {
       if (!text) return true
       const t = text.trim()
-      return t === '（该平台未获得回复）' || t === '(该平台未获得回复)' || t === '[无回复]'
+      return t === '（platform）' || t === '(platform)' || t === '[none]'
     }
 
-    // 尝试按问题编号分割回答
+    // 
     const splitAnswerByQuestions = (answerText, questionCount) => {
       if (!answerText || questionCount <= 0) return [answerText]
       if (isPlaceholderText(answerText)) return ['']
 
-      // 支持两种编号格式：
-      // 1. "问题X：" 或 "问题X:" （中文格式，后端新格式）
-      // 2. "1. " 或 "\n1. " （数字+点，旧格式兼容）
+      // ：
+      // 1. "X：" "X:" （Chinese，backend）
+      // 2. "1. " "\n1. " （+，）
       let matches = []
       let match
 
-      // 优先尝试 "问题X：" 格式
-      const cnPattern = /(?:^|[\r\n]+)问题(\d+)[：:]\s*/g
-      while ((match = cnPattern.exec(answerText)) !== null) {
+      // "X：" 
+      const cnPattern = /(?:^|[\r\n]+)(\d+)[：:]\s*/g
+      while ((match = cnPattern.exec(answerText))!== null) {
         matches.push({
           num: parseInt(match[1]),
           index: match.index,
@@ -1355,10 +1355,10 @@ const InterviewDisplay = {
         })
       }
 
-      // 如果没匹配到，回退到 "数字." 格式
+      // ， "." 
       if (matches.length === 0) {
         const numPattern = /(?:^|[\r\n]+)(\d+)\.\s+/g
-        while ((match = numPattern.exec(answerText)) !== null) {
+        while ((match = numPattern.exec(answerText))!== null) {
           matches.push({
             num: parseInt(match[1]),
             index: match.index,
@@ -1367,23 +1367,23 @@ const InterviewDisplay = {
         }
       }
 
-      // 如果没有找到编号或只找到一个，返回整体
+      // ，return
       if (matches.length <= 1) {
         const cleaned = answerText
-          .replace(/^问题\d+[：:]\s*/, '')
-          .replace(/^\d+\.\s+/, '')
-          .trim()
+.replace(/^\d+[：:]\s*/, '')
+.replace(/^\d+\.\s+/, '')
+.trim()
         return [cleaned || answerText]
       }
 
-      // 按编号提取各部分
+      // 
       const parts = []
       for (let i = 0; i < matches.length; i++) {
         const current = matches[i]
         const next = matches[i + 1]
 
         const startIdx = current.index + current.fullMatch.length
-        const endIdx = next ? next.index : answerText.length
+        const endIdx = next? next.index: answerText.length
 
         let part = answerText.substring(startIdx, endIdx).trim()
         part = part.replace(/[\r\n]+$/, '').trim()
@@ -1397,30 +1397,30 @@ const InterviewDisplay = {
       return [answerText]
     }
     
-    // 获取某个问题对应的回答
+    // get
     const getAnswerForQuestion = (interview, qIdx, platform) => {
-      const answer = platform === 'twitter' ? interview.twitterAnswer : (interview.redditAnswer || interview.twitterAnswer)
+      const answer = platform === 'twitter'? interview.twitterAnswer: (interview.redditAnswer || interview.twitterAnswer)
       if (!answer || isPlaceholderText(answer)) return answer || ''
 
       const questionCount = interview.questions?.length || 1
       const answers = splitAnswerByQuestions(answer, questionCount)
 
-      // 分割成功且索引有效
+      // success
       if (answers.length > 1 && qIdx < answers.length) {
         return answers[qIdx] || ''
       }
 
-      // 分割失败：第一个问题返回完整回答，其余返回空
-      return qIdx === 0 ? answer : ''
+      // failed：return，return
+      return qIdx === 0? answer: ''
     }
     
-    // 检查某个问题是否有双平台回答（过滤占位文本）
+    // platform（）
     const hasMultiplePlatforms = (interview, qIdx) => {
-      if (!interview.twitterAnswer || !interview.redditAnswer) return false
+      if (!interview.twitterAnswer ||!interview.redditAnswer) return false
       const twitterAnswer = getAnswerForQuestion(interview, qIdx, 'twitter')
       const redditAnswer = getAnswerForQuestion(interview, qIdx, 'reddit')
-      // 两个平台都有真实回答（非占位文本）且内容不同
-      return !isPlaceholderText(twitterAnswer) && !isPlaceholderText(redditAnswer) && twitterAnswer !== redditAnswer
+      // platform（）content
+      return!isPlaceholderText(twitterAnswer) &&!isPlaceholderText(redditAnswer) && twitterAnswer!== redditAnswer
     }
     
     return () => h('div', { class: 'interview-display' }, [
@@ -1452,7 +1452,7 @@ const InterviewDisplay = {
           key: i,
           onClick: () => { activeIndex.value = i }
         }, [
-          h('span', { class: 'tab-avatar' }, interview.name ? interview.name.charAt(0) : (i + 1)),
+          h('span', { class: 'tab-avatar' }, interview.name? interview.name.charAt(0): (i + 1)),
           h('span', { class: 'tab-name' }, interview.title || interview.name || `Agent ${i + 1}`)
         ]))
       ),
@@ -1469,17 +1469,17 @@ const InterviewDisplay = {
           ])
         ]),
         
-        // Selection Reason - 选择理由
+        // Selection Reason - 
         props.result.interviews[activeIndex.value]?.selectionReason && h('div', { class: 'selection-reason' }, [
-          h('div', { class: 'reason-label' }, '选择理由'),
+          h('div', { class: 'reason-label' }, ''),
           h('div', { class: 'reason-content' }, props.result.interviews[activeIndex.value].selectionReason)
         ]),
         
-        // Q&A Conversation Thread - 一问一答样式
+        // Q&A Conversation Thread - 
         h('div', { class: 'qa-thread' }, 
           (props.result.interviews[activeIndex.value]?.questions?.length > 0 
-            ? props.result.interviews[activeIndex.value].questions 
-            : [props.result.interviews[activeIndex.value]?.question || 'No question available']
+? props.result.interviews[activeIndex.value].questions 
+: [props.result.interviews[activeIndex.value]?.question || 'No question available']
           ).map((question, qIdx) => {
             const interview = props.result.interviews[activeIndex.value]
             const currentPlatform = getPlatformTab(activeIndex.value, qIdx)
@@ -1505,7 +1505,7 @@ const InterviewDisplay = {
                 h('div', { class: 'qa-content' }, [
                   h('div', { class: 'qa-answer-header' }, [
                     h('div', { class: 'qa-sender' }, interview?.name || 'Agent'),
-                    // 双平台切换按钮（仅在有真实双平台回答时显示）
+                    // platform（platform）
                     hasDualPlatform && h('div', { class: 'platform-switch' }, [
                       h('button', {
                         class: ['platform-btn', { active: currentPlatform === 'twitter' }],
@@ -1532,16 +1532,16 @@ const InterviewDisplay = {
                   h('div', {
                     class: ['qa-text', 'answer-text', { 'placeholder-text': isPlaceholder }],
                     innerHTML: isPlaceholder
-                      ? answerText
-                      : formatAnswer(answerText, isExpanded)
-                          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                          .replace(/\n/g, '<br>')
+? answerText
+: formatAnswer(answerText, isExpanded)
+.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+.replace(/\n/g, '<br>')
                   }),
-                  // Expand/Collapse Button（占位文本不显示）
-                  !isPlaceholder && answerText.length > 400 && h('button', {
+                  // Expand/Collapse Button（）
+!isPlaceholder && answerText.length > 400 && h('button', {
                     class: 'expand-answer-btn',
                     onClick: () => toggleAnswer(expandKey)
-                  }, isExpanded ? 'Show Less' : 'Show More')
+                  }, isExpanded? 'Show Less': 'Show More')
                 ])
               ])
             ])
@@ -1554,7 +1554,7 @@ const InterviewDisplay = {
           h('div', { class: 'quotes-list' },
             props.result.interviews[activeIndex.value].quotes.slice(0, 3).map((quote, qi) => {
               const cleanedQuote = cleanQuoteText(quote)
-              const displayQuote = cleanedQuote.length > 200 ? cleanedQuote.substring(0, 200) + '...' : cleanedQuote
+              const displayQuote = cleanedQuote.length > 200? cleanedQuote.substring(0, 200) + '...': cleanedQuote
               return h('blockquote', { 
                 key: qi, 
                 class: 'quote-item',
@@ -1570,7 +1570,7 @@ const InterviewDisplay = {
         h('div', { class: 'summary-header' }, 'Interview Summary'),
         h('div', { 
           class: 'summary-content',
-          innerHTML: renderMarkdown(props.result.summary.length > 500 ? props.result.summary.substring(0, 500) + '...' : props.result.summary)
+          innerHTML: renderMarkdown(props.result.summary.length > 500? props.result.summary.substring(0, 500) + '...': props.result.summary)
         })
       ])
     ])
@@ -1643,25 +1643,25 @@ const QuickSearchDisplay = {
       ]),
       
       // Content Area
-      h('div', { class: ['quicksearch-content', { 'no-tabs': !showTabs.value }] }, [
+      h('div', { class: ['quicksearch-content', { 'no-tabs':!showTabs.value }] }, [
         // Facts (always show if no tabs, or when facts tab is active)
         ((!showTabs.value) || activeTab.value === 'facts') && h('div', { class: 'facts-panel' }, [
-          !showTabs.value && h('div', { class: 'panel-header' }, [
+!showTabs.value && h('div', { class: 'panel-header' }, [
             h('span', { class: 'panel-title' }, t('step4.panelSearchResults')),
             h('span', { class: 'panel-count' }, t('step4.totalCount', { count: props.result.facts.length }))
           ]),
-          props.result.facts.length > 0 ? h('div', { class: 'facts-list' },
-            (expandedFacts.value ? props.result.facts : props.result.facts.slice(0, INITIAL_SHOW_COUNT)).map((fact, i) => 
+          props.result.facts.length > 0? h('div', { class: 'facts-list' },
+            (expandedFacts.value? props.result.facts: props.result.facts.slice(0, INITIAL_SHOW_COUNT)).map((fact, i) => 
               h('div', { class: 'fact-item', key: i }, [
                 h('span', { class: 'fact-number' }, i + 1),
                 h('div', { class: 'fact-content' }, fact)
               ])
             )
-          ) : h('div', { class: 'empty-state' }, t('step4.emptySearchResults')),
+          ): h('div', { class: 'empty-state' }, t('step4.emptySearchResults')),
           props.result.facts.length > INITIAL_SHOW_COUNT && h('button', {
             class: 'expand-btn',
-            onClick: () => { expandedFacts.value = !expandedFacts.value }
-          }, expandedFacts.value ? t('step4.collapse') : t('step4.expandAll', { count: props.result.facts.length }))
+            onClick: () => { expandedFacts.value =!expandedFacts.value }
+          }, expandedFacts.value? t('step4.collapse'): t('step4.expandAll', { count: props.result.facts.length }))
         ]),
         
         // Edges Tab
@@ -1758,7 +1758,7 @@ const activeSectionIndex = computed(() => {
 })
 
 const isPlanningDone = computed(() => {
-  return !!reportOutline.value?.sections?.length || agentLogs.value.some(l => l.action === 'planning_complete')
+  return!!reportOutline.value?.sections?.length || agentLogs.value.some(l => l.action === 'planning_complete')
 })
 
 const isPlanningStarted = computed(() => {
@@ -1766,62 +1766,62 @@ const isPlanningStarted = computed(() => {
 })
 
 const isFinalizing = computed(() => {
-  return !isComplete.value && isPlanningDone.value && totalSections.value > 0 && completedSections.value >= totalSections.value
+  return!isComplete.value && isPlanningDone.value && totalSections.value > 0 && completedSections.value >= totalSections.value
 })
 
-// 当前活跃的步骤（用于顶部显示）
+// steps（）
 const activeStep = computed(() => {
   const steps = workflowSteps.value
-  // 找到当前 active 的步骤
+  // active steps
   const active = steps.find(s => s.status === 'active')
   if (active) return active
   
-  // 如果没有 active，返回最后一个 done 的步骤
+  // active，return done steps
   const doneSteps = steps.filter(s => s.status === 'done')
   if (doneSteps.length > 0) return doneSteps[doneSteps.length - 1]
   
-  // 否则返回第一个步骤
-  return steps[0] || { noLabel: '--', title: '等待开始', status: 'todo', meta: '' }
+  // returnsteps
+  return steps[0] || { noLabel: '--', title: 'waiting', status: 'todo', meta: '' }
 })
 
 const workflowSteps = computed(() => {
   const steps = []
 
   // Planning / Outline
-  const planningStatus = isPlanningDone.value ? 'done' : (isPlanningStarted.value ? 'active' : 'todo')
+  const planningStatus = isPlanningDone.value? 'done': (isPlanningStarted.value? 'active': 'todo')
   steps.push({
     key: 'planning',
     noLabel: 'PL',
     title: 'Planning / Outline',
     status: planningStatus,
-    meta: planningStatus === 'active' ? 'IN PROGRESS' : ''
+    meta: planningStatus === 'active'? 'IN PROGRESS': ''
   })
 
   // Sections (if outline exists)
   const sections = reportOutline.value?.sections || []
   sections.forEach((section, i) => {
     const idx = i + 1
-    const status = (isComplete.value || !!generatedSections.value[idx])
-      ? 'done'
-      : (activeSectionIndex.value === idx ? 'active' : 'todo')
+    const status = (isComplete.value ||!!generatedSections.value[idx])
+? 'done'
+: (activeSectionIndex.value === idx? 'active': 'todo')
 
     steps.push({
       key: `section-${idx}`,
       noLabel: String(idx).padStart(2, '0'),
       title: section.title,
       status,
-      meta: status === 'active' ? 'IN PROGRESS' : ''
+      meta: status === 'active'? 'IN PROGRESS': ''
     })
   })
 
   // Complete
-  const completeStatus = isComplete.value ? 'done' : (isFinalizing.value ? 'active' : 'todo')
+  const completeStatus = isComplete.value? 'done': (isFinalizing.value? 'active': 'todo')
   steps.push({
     key: 'complete',
     noLabel: 'OK',
     title: 'Complete',
     status: completeStatus,
-    meta: completeStatus === 'active' ? 'FINALIZING' : ''
+    meta: completeStatus === 'active'? 'FINALIZING': ''
   })
 
   return steps
@@ -1833,7 +1833,7 @@ const addLog = (msg) => {
 }
 
 const isSectionCompleted = (sectionIndex) => {
-  return !!generatedSections.value[sectionIndex]
+  return!!generatedSections.value[sectionIndex]
 }
 
 const formatTime = (timestamp) => {
@@ -1874,25 +1874,25 @@ const truncateText = (text, maxLen) => {
 const renderMarkdown = (content) => {
   if (!content) return ''
   
-  // 去掉开头的二级标题（## xxx），因为章节标题已在外层显示
+  // （## xxx），
   let processedContent = content.replace(/^##\s+.+\n+/, '')
   
-  // 处理代码块
+  // 
   let html = processedContent.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre class="code-block"><code>$2</code></pre>')
   
-  // 处理行内代码
+  // 
   html = html.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>')
   
-  // 处理标题
+  // 
   html = html.replace(/^#### (.+)$/gm, '<h5 class="md-h5">$1</h5>')
   html = html.replace(/^### (.+)$/gm, '<h4 class="md-h4">$1</h4>')
   html = html.replace(/^## (.+)$/gm, '<h3 class="md-h3">$1</h3>')
   html = html.replace(/^# (.+)$/gm, '<h2 class="md-h2">$1</h2>')
   
-  // 处理引用块
+  // 
   html = html.replace(/^> (.+)$/gm, '<blockquote class="md-quote">$1</blockquote>')
   
-  // 处理列表 - 支持子列表
+  // list - list
   html = html.replace(/^(\s*)- (.+)$/gm, (match, indent, text) => {
     const level = Math.floor(indent.length / 2)
     return `<li class="md-li" data-level="${level}">${text}</li>`
@@ -1902,52 +1902,52 @@ const renderMarkdown = (content) => {
     return `<li class="md-oli" data-level="${level}">${text}</li>`
   })
 
-  // 包装无序列表
+  // nonelist
   html = html.replace(/(<li class="md-li"[^>]*>.*?<\/li>\s*)+/g, '<ul class="md-ul">$&</ul>')
-  // 包装有序列表
+  // list
   html = html.replace(/(<li class="md-oli"[^>]*>.*?<\/li>\s*)+/g, '<ol class="md-ol">$&</ol>')
 
-  // 清理列表项之间的所有空白
+  // list
   html = html.replace(/<\/li>\s+<li/g, '</li><li')
-  // 清理列表开始标签后的空白
+  // list
   html = html.replace(/<ul class="md-ul">\s+/g, '<ul class="md-ul">')
   html = html.replace(/<ol class="md-ol">\s+/g, '<ol class="md-ol">')
-  // 清理列表结束标签前的空白
+  // list
   html = html.replace(/\s+<\/ul>/g, '</ul>')
   html = html.replace(/\s+<\/ol>/g, '</ol>')
   
-  // 处理粗体和斜体
+  // 
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
   html = html.replace(/\*(.+?)\*/g, '<em>$1</em>')
   html = html.replace(/_(.+?)_/g, '<em>$1</em>')
   
-  // 处理分隔线
+  // 
   html = html.replace(/^---$/gm, '<hr class="md-hr">')
   
-  // 处理换行 - 空行变成段落分隔，单换行变成 <br>
+  // - ， <br>
   html = html.replace(/\n\n/g, '</p><p class="md-p">')
   html = html.replace(/\n/g, '<br>')
   
-  // 包装在段落中
+  // 
   html = '<p class="md-p">' + html + '</p>'
   
-  // 清理空段落
+  // 
   html = html.replace(/<p class="md-p"><\/p>/g, '')
   html = html.replace(/<p class="md-p">(<h[2-5])/g, '$1')
   html = html.replace(/(<\/h[2-5]>)<\/p>/g, '$1')
   html = html.replace(/<p class="md-p">(<ul|<ol|<blockquote|<pre|<hr)/g, '$1')
   html = html.replace(/(<\/ul>|<\/ol>|<\/blockquote>|<\/pre>)<\/p>/g, '$1')
-  // 清理块级元素前后的 <br> 标签
+  // <br> 
   html = html.replace(/<br>\s*(<ul|<ol|<blockquote)/g, '$1')
   html = html.replace(/(<\/ul>|<\/ol>|<\/blockquote>)\s*<br>/g, '$1')
-  // 清理 <p><br> 紧跟块级元素的情况（多余空行导致）
+  // <p><br> （）
   html = html.replace(/<p class="md-p">(<br>\s*)+(<ul|<ol|<blockquote|<pre|<hr)/g, '$2')
-  // 清理连续的 <br> 标签
+  // <br> 
   html = html.replace(/(<br>\s*){2,}/g, '<br>')
-  // 清理块级元素后紧跟的段落开始标签前的 <br>
+  // <br>
   html = html.replace(/(<\/ol>|<\/ul>|<\/blockquote>)<br>(<p|<div)/g, '$1$2')
 
-  // 修复非连续有序列表的编号：当单项 <ol> 被段落内容隔开时，保持编号递增
+  // list： <ol> content，
   const tokens = html.split(/(<ol class="md-ol">(?:<li class="md-oli"[^>]*>[\s\S]*?<\/li>)+<\/ol>)/g)
   let olCounter = 0
   let inSequence = false
@@ -1977,18 +1977,18 @@ const renderMarkdown = (content) => {
 }
 
 const getTimelineItemClass = (log, idx, total) => {
-  const isLatest = idx === total - 1 && !isComplete.value
+  const isLatest = idx === total - 1 &&!isComplete.value
   const isMilestone = log.action === 'section_complete' || log.action === 'report_complete'
   return {
     'node--active': isLatest,
-    'node--done': !isLatest && isMilestone,
-    'node--muted': !isLatest && !isMilestone,
+    'node--done':!isLatest && isMilestone,
+    'node--muted':!isLatest &&!isMilestone,
     'node--tool': log.action === 'tool_call' || log.action === 'tool_result'
   }
 }
 
 const getConnectorClass = (log, idx, total) => {
-  const isLatest = idx === total - 1 && !isComplete.value
+  const isLatest = idx === total - 1 &&!isComplete.value
   if (isLatest) return 'dot-active'
   if (log.action === 'section_complete' || log.action === 'report_complete') return 'dot-done'
   return 'dot-muted'
@@ -2011,9 +2011,9 @@ const getActionLabel = (action) => {
 }
 
 const getLogLevelClass = (log) => {
-  if (log.includes('ERROR') || log.includes('错误')) return 'error'
-  if (log.includes('WARNING') || log.includes('警告')) return 'warning'
-  // INFO 使用默认颜色，不标记为 success
+  if (log.includes('ERROR') || log.includes('Error')) return 'error'
+  if (log.includes('WARNING') || log.includes('Warning')) return 'warning'
+  // INFO default， success
   return ''
 }
 
@@ -2042,11 +2042,11 @@ const fetchAgentLog = async () => {
             currentSectionIndex.value = log.section_index
           }
 
-          // section_complete - 章节生成完成
+          // section_complete - 
           if (log.action === 'section_complete') {
             if (log.details?.content) {
               generatedSections.value[log.section_index] = log.details.content
-              // 自动展开刚生成的章节
+              // 
               expandedContent.value.add(log.section_index - 1)
               currentSectionIndex.value = null
             }
@@ -2054,10 +2054,10 @@ const fetchAgentLog = async () => {
           
           if (log.action === 'report_complete') {
             isComplete.value = true
-            currentSectionIndex.value = null  // 确保清除 loading 状态
+            currentSectionIndex.value = null // loading status
             emit('update-status', 'completed')
             stopPolling()
-            // 滚动逻辑统一在循环结束后的 nextTick 中处理
+            // nextTick 
           }
           
           if (log.action === 'report_start') {
@@ -2069,7 +2069,7 @@ const fetchAgentLog = async () => {
         
         nextTick(() => {
           if (rightPanel.value) {
-            // 如果任务已完成，滚动到顶部；否则滚动到底部跟随最新日志
+            // taskcompleted，；log
             if (isComplete.value) {
               rightPanel.value.scrollTop = 0
             } else {
@@ -2084,39 +2084,39 @@ const fetchAgentLog = async () => {
   }
 }
 
-// 提取最终答案内容 - 从 LLM response 中提取章节内容
+// content - LLM response content
 const extractFinalContent = (response) => {
   if (!response) return null
   
-  // 尝试提取 <final_answer> 标签内的内容
+  // <final_answer> content
   const finalAnswerTagMatch = response.match(/<final_answer>([\s\S]*?)<\/final_answer>/)
   if (finalAnswerTagMatch) {
     return finalAnswerTagMatch[1].trim()
   }
   
-  // 尝试找 Final Answer: 后面的内容（支持多种格式）
-  // 格式1: Final Answer:\n\n内容
-  // 格式2: Final Answer: 内容
+  // Final Answer: content（）
+  // 1: Final Answer:\n\ncontent
+  // 2: Final Answer: content
   const finalAnswerMatch = response.match(/Final\s*Answer:\s*\n*([\s\S]*)$/i)
   if (finalAnswerMatch) {
     return finalAnswerMatch[1].trim()
   }
   
-  // 尝试找 最终答案: 后面的内容
-  const chineseFinalMatch = response.match(/最终答案[:：]\s*\n*([\s\S]*)$/i)
+  //: content
+  const chineseFinalMatch = response.match(/[:：]\s*\n*([\s\S]*)$/i)
   if (chineseFinalMatch) {
     return chineseFinalMatch[1].trim()
   }
   
-  // 如果以 ## 或 # 或 > 开头，可能是直接的 markdown 内容
+  // ## # > ， markdown content
   const trimmedResponse = response.trim()
   if (trimmedResponse.match(/^[#>]/)) {
     return trimmedResponse
   }
   
-  // 如果内容较长且包含markdown格式，尝试移除思考过程后返回
+  // contentmarkdown，return
   if (response.length > 300 && (response.includes('**') || response.includes('>'))) {
-    // 移除 Thought: 开头的思考过程
+    // Thought: 
     const thoughtMatch = response.match(/^Thought:[\s\S]*?(?=\n\n[^T]|\n\n$)/i)
     if (thoughtMatch) {
       const afterThought = response.substring(thoughtMatch[0].length).trim()
@@ -2295,15 +2295,15 @@ watch(() => props.reportId, (newId) => {
   border-color: #1F2937;
 }
 
-.panel-header--active .header-index {
+.panel-header--active.header-index {
   color: #1F2937;
 }
 
-.panel-header--active .header-title {
+.panel-header--active.header-title {
   color: #1F2937;
 }
 
-.panel-header--active .header-meta {
+.panel-header--active.header-meta {
   color: #1F2937;
 }
 
@@ -2311,12 +2311,12 @@ watch(() => props.reportId, (newId) => {
   background: #F9FAFB;
 }
 
-.panel-header--done .header-index {
+.panel-header--done.header-index {
   color: #10B981;
 }
 
-.panel-header--todo .header-index,
-.panel-header--todo .header-title {
+.panel-header--todo.header-index,
+.panel-header--todo.header-title {
   color: #9CA3AF;
 }
 
@@ -2461,7 +2461,7 @@ watch(() => props.reportId, (newId) => {
 .section-number {
   font-family: 'JetBrains Mono', monospace;
   font-size: 16px;
-  color: #9CA3AF; /* 深灰色，不随状态变化 */
+  color: #9CA3AF; /* ，status */
   font-weight: 500;
 }
 
@@ -2475,12 +2475,12 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* States */
-.report-section-item.is-pending .section-title {
+.report-section-item.is-pending.section-title {
   color: #D1D5DB;
 }
 
-.report-section-item.is-active .section-title,
-.report-section-item.is-completed .section-title {
+.report-section-item.is-active.section-title,
+.report-section-item.is-completed.section-title {
   color: #111827;
 }
 
@@ -2497,13 +2497,13 @@ watch(() => props.reportId, (newId) => {
   color: #374151;
 }
 
-.generated-content :deep(p) {
+.generated-content:deep(p) {
   margin-bottom: 1em;
 }
 
-.generated-content :deep(.md-h2),
-.generated-content :deep(.md-h3),
-.generated-content :deep(.md-h4) {
+.generated-content:deep(.md-h2),
+.generated-content:deep(.md-h3),
+.generated-content:deep(.md-h4) {
   font-family: 'Times New Roman', Times, serif;
   color: #111827;
   margin-top: 1.5em;
@@ -2511,22 +2511,22 @@ watch(() => props.reportId, (newId) => {
   font-weight: 700;
 }
 
-.generated-content :deep(.md-h2) { font-size: 20px; border-bottom: 1px solid #F3F4F6; padding-bottom: 8px; }
-.generated-content :deep(.md-h3) { font-size: 18px; }
-.generated-content :deep(.md-h4) { font-size: 16px; }
+.generated-content:deep(.md-h2) { font-size: 20px; border-bottom: 1px solid #F3F4F6; padding-bottom: 8px; }
+.generated-content:deep(.md-h3) { font-size: 18px; }
+.generated-content:deep(.md-h4) { font-size: 16px; }
 
-.generated-content :deep(.md-ul),
-.generated-content :deep(.md-ol) {
+.generated-content:deep(.md-ul),
+.generated-content:deep(.md-ol) {
   padding-left: 24px;
   margin: 12px 0;
 }
 
-.generated-content :deep(.md-li),
-.generated-content :deep(.md-oli) {
+.generated-content:deep(.md-li),
+.generated-content:deep(.md-oli) {
   margin: 6px 0;
 }
 
-.generated-content :deep(.md-quote) {
+.generated-content:deep(.md-quote) {
   border-left: 3px solid #E5E7EB;
   padding-left: 16px;
   margin: 1.5em 0;
@@ -2535,7 +2535,7 @@ watch(() => props.reportId, (newId) => {
   font-family: 'Times New Roman', Times, serif;
 }
 
-.generated-content :deep(.code-block) {
+.generated-content:deep(.code-block) {
   background: #F9FAFB;
   padding: 12px;
   border-radius: 6px;
@@ -2546,7 +2546,7 @@ watch(() => props.reportId, (newId) => {
   border: 1px solid #E5E7EB;
 }
 
-.generated-content :deep(strong) {
+.generated-content:deep(strong) {
   font-weight: 600;
   color: #111827;
 }
@@ -2595,7 +2595,7 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* Content Styles Override for this view */
-.generated-content :deep(.md-h2) {
+.generated-content:deep(.md-h2) {
   font-family: 'Times New Roman', Times, serif;
   font-size: 18px;
   margin-top: 0;
@@ -2839,12 +2839,12 @@ watch(() => props.reportId, (newId) => {
   margin-top: -2px;
 }
 
-.wf-step--active .wf-step-dot {
+.wf-step--active.wf-step-dot {
   background: var(--wf-active-dot);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
 }
 
-.wf-step--done .wf-step-dot {
+.wf-step--done.wf-step-dot {
   background: var(--wf-done-dot);
 }
 
@@ -2885,8 +2885,8 @@ watch(() => props.reportId, (newId) => {
   flex-shrink: 0;
 }
 
-.wf-step--todo .wf-step-title,
-.wf-step--todo .wf-step-index {
+.wf-step--todo.wf-step-title,
+.wf-step--todo.wf-step-index {
   color: var(--wf-todo-text);
 }
 
@@ -3128,7 +3128,7 @@ watch(() => props.reportId, (newId) => {
   color: #6B7280;
 }
 
-.section-tag.completed .tag-num {
+.section-tag.completed.tag-num {
   color: #059669;
 }
 
@@ -3162,7 +3162,7 @@ watch(() => props.reportId, (newId) => {
   border-color: #C4B5FD;
   color: #6D28D9;
 }
-.tool-badge.tool-purple .tool-icon {
+.tool-badge.tool-purple.tool-icon {
   stroke: #7C3AED;
 }
 
@@ -3172,7 +3172,7 @@ watch(() => props.reportId, (newId) => {
   border-color: #93C5FD;
   color: #1D4ED8;
 }
-.tool-badge.tool-blue .tool-icon {
+.tool-badge.tool-blue.tool-icon {
   stroke: #2563EB;
 }
 
@@ -3182,7 +3182,7 @@ watch(() => props.reportId, (newId) => {
   border-color: #86EFAC;
   color: #15803D;
 }
-.tool-badge.tool-green .tool-icon {
+.tool-badge.tool-green.tool-icon {
   stroke: #16A34A;
 }
 
@@ -3192,7 +3192,7 @@ watch(() => props.reportId, (newId) => {
   border-color: #FDBA74;
   color: #C2410C;
 }
-.tool-badge.tool-orange .tool-icon {
+.tool-badge.tool-orange.tool-icon {
   stroke: #EA580C;
 }
 
@@ -3202,7 +3202,7 @@ watch(() => props.reportId, (newId) => {
   border-color: #67E8F9;
   color: #0E7490;
 }
-.tool-badge.tool-cyan .tool-icon {
+.tool-badge.tool-cyan.tool-icon {
   stroke: #0891B2;
 }
 
@@ -3212,7 +3212,7 @@ watch(() => props.reportId, (newId) => {
   border-color: #F9A8D4;
   color: #BE185D;
 }
-.tool-badge.tool-pink .tool-icon {
+.tool-badge.tool-pink.tool-icon {
   stroke: #DB2777;
 }
 
@@ -3222,7 +3222,7 @@ watch(() => props.reportId, (newId) => {
   border-color: #D1D5DB;
   color: #374151;
 }
-.tool-badge.tool-gray .tool-icon {
+.tool-badge.tool-gray.tool-icon {
   stroke: #6B7280;
 }
 
@@ -3324,7 +3324,7 @@ watch(() => props.reportId, (newId) => {
   color: #6B7280;
 }
 
-/* Legacy toggle-raw removed - using unified .action-btn */
+/* Legacy toggle-raw removed - using unified.action-btn */
 
 /* LLM Response */
 .llm-meta {
@@ -3469,7 +3469,7 @@ watch(() => props.reportId, (newId) => {
 
 /* ========== Structured Result Display Components ========== */
 
-/* Common Styles - using :deep() for dynamic components */
+/* Common Styles - using:deep() for dynamic components */
 :deep(.stat-row) {
   display: flex;
   gap: 8px;
@@ -3485,7 +3485,7 @@ watch(() => props.reportId, (newId) => {
   text-align: center;
 }
 
-:deep(.stat-box .stat-num) {
+:deep(.stat-box.stat-num) {
   display: block;
   font-size: 20px;
   font-weight: 700;
@@ -3493,7 +3493,7 @@ watch(() => props.reportId, (newId) => {
   font-family: 'JetBrains Mono', monospace;
 }
 
-:deep(.stat-box .stat-label) {
+:deep(.stat-box.stat-label) {
   display: block;
   font-size: 10px;
   color: #9CA3AF;
@@ -3507,7 +3507,7 @@ watch(() => props.reportId, (newId) => {
   border-color: #A7F3D0;
 }
 
-:deep(.stat-box.highlight .stat-num) {
+:deep(.stat-box.highlight.stat-num) {
   color: #059669;
 }
 
@@ -3516,7 +3516,7 @@ watch(() => props.reportId, (newId) => {
   border-color: #E5E7EB;
 }
 
-:deep(.stat-box.muted .stat-num) {
+:deep(.stat-box.muted.stat-num) {
   color: #6B7280;
 }
 
@@ -3605,7 +3605,7 @@ watch(() => props.reportId, (newId) => {
   flex-shrink: 0;
 }
 
-:deep(.fact-row.active .fact-idx) {
+:deep(.fact-row.active.fact-idx) {
   background: #A7F3D0;
   color: #065F46;
 }
@@ -3693,20 +3693,20 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* Header */
-:deep(.interview-display .interview-header) {
+:deep(.interview-display.interview-header) {
   padding: 0;
   background: transparent;
   border-bottom: none;
   margin-bottom: 16px;
 }
 
-:deep(.interview-display .header-main) {
+:deep(.interview-display.header-main) {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-:deep(.interview-display .header-title) {
+:deep(.interview-display.header-title) {
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
   font-weight: 600;
@@ -3714,43 +3714,43 @@ watch(() => props.reportId, (newId) => {
   letter-spacing: -0.01em;
 }
 
-:deep(.interview-display .header-stats) {
+:deep(.interview-display.header-stats) {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-:deep(.interview-display .stat-item) {
+:deep(.interview-display.stat-item) {
   display: flex;
   align-items: baseline;
   gap: 4px;
 }
 
-:deep(.interview-display .stat-value) {
+:deep(.interview-display.stat-value) {
   font-size: 14px;
   font-weight: 600;
   color: #4F46E5;
   font-family: 'JetBrains Mono', monospace;
 }
 
-:deep(.interview-display .stat-label) {
+:deep(.interview-display.stat-label) {
   font-size: 11px;
   color: #9CA3AF;
   text-transform: lowercase;
 }
 
-:deep(.interview-display .stat-divider) {
+:deep(.interview-display.stat-divider) {
   color: #D1D5DB;
   font-size: 12px;
 }
 
-:deep(.interview-display .stat-size) {
+:deep(.interview-display.stat-size) {
   font-size: 11px;
   color: #9CA3AF;
   font-family: 'JetBrains Mono', monospace;
 }
 
-:deep(.interview-display .header-topic) {
+:deep(.interview-display.header-topic) {
   margin-top: 4px;
   font-size: 12px;
   color: #6B7280;
@@ -3758,7 +3758,7 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* Agent Tabs - Card Style */
-:deep(.interview-display .agent-tabs) {
+:deep(.interview-display.agent-tabs) {
   display: flex;
   gap: 8px;
   padding: 0 0 14px 0;
@@ -3770,24 +3770,24 @@ watch(() => props.reportId, (newId) => {
   scrollbar-color: #E5E7EB transparent;
 }
 
-:deep(.interview-display .agent-tabs::-webkit-scrollbar) {
+:deep(.interview-display.agent-tabs::-webkit-scrollbar) {
   height: 4px;
 }
 
-:deep(.interview-display .agent-tabs::-webkit-scrollbar-track) {
+:deep(.interview-display.agent-tabs::-webkit-scrollbar-track) {
   background: transparent;
 }
 
-:deep(.interview-display .agent-tabs::-webkit-scrollbar-thumb) {
+:deep(.interview-display.agent-tabs::-webkit-scrollbar-thumb) {
   background: #E5E7EB;
   border-radius: 2px;
 }
 
-:deep(.interview-display .agent-tabs::-webkit-scrollbar-thumb:hover) {
+:deep(.interview-display.agent-tabs::-webkit-scrollbar-thumb:hover) {
   background: #D1D5DB;
 }
 
-:deep(.interview-display .agent-tab) {
+:deep(.interview-display.agent-tab) {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -3803,20 +3803,20 @@ watch(() => props.reportId, (newId) => {
   white-space: nowrap;
 }
 
-:deep(.interview-display .agent-tab:hover) {
+:deep(.interview-display.agent-tab:hover) {
   background: #F3F4F6;
   border-color: #D1D5DB;
   color: #374151;
 }
 
-:deep(.interview-display .agent-tab.active) {
+:deep(.interview-display.agent-tab.active) {
   background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
   border-color: #A5B4FC;
   color: #4338CA;
   box-shadow: 0 1px 2px rgba(99, 102, 241, 0.1);
 }
 
-:deep(.interview-display .tab-avatar) {
+:deep(.interview-display.tab-avatar) {
   width: 18px;
   height: 18px;
   display: flex;
@@ -3830,29 +3830,29 @@ watch(() => props.reportId, (newId) => {
   flex-shrink: 0;
 }
 
-:deep(.interview-display .agent-tab:hover .tab-avatar) {
+:deep(.interview-display.agent-tab:hover.tab-avatar) {
   background: #D1D5DB;
 }
 
-:deep(.interview-display .agent-tab.active .tab-avatar) {
+:deep(.interview-display.agent-tab.active.tab-avatar) {
   background: #6366F1;
   color: #FFFFFF;
 }
 
-:deep(.interview-display .tab-name) {
+:deep(.interview-display.tab-name) {
   max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 /* Interview Detail */
-:deep(.interview-display .interview-detail) {
+:deep(.interview-display.interview-detail) {
   padding: 12px 0;
   background: transparent;
 }
 
 /* Agent Profile - No card */
-:deep(.interview-display .agent-profile) {
+:deep(.interview-display.agent-profile) {
   display: flex;
   gap: 12px;
   padding: 0;
@@ -3861,7 +3861,7 @@ watch(() => props.reportId, (newId) => {
   margin-bottom: 16px;
 }
 
-:deep(.interview-display .profile-avatar) {
+:deep(.interview-display.profile-avatar) {
   width: 32px;
   height: 32px;
   display: flex;
@@ -3875,25 +3875,25 @@ watch(() => props.reportId, (newId) => {
   flex-shrink: 0;
 }
 
-:deep(.interview-display .profile-info) {
+:deep(.interview-display.profile-info) {
   flex: 1;
   min-width: 0;
 }
 
-:deep(.interview-display .profile-name) {
+:deep(.interview-display.profile-name) {
   font-size: 13px;
   font-weight: 600;
   color: #111827;
   margin-bottom: 2px;
 }
 
-:deep(.interview-display .profile-role) {
+:deep(.interview-display.profile-role) {
   font-size: 11px;
   color: #6B7280;
   margin-bottom: 4px;
 }
 
-:deep(.interview-display .profile-bio) {
+:deep(.interview-display.profile-bio) {
   font-size: 11px;
   color: #9CA3AF;
   line-height: 1.4;
@@ -3903,8 +3903,8 @@ watch(() => props.reportId, (newId) => {
   overflow: hidden;
 }
 
-/* Selection Reason - 选择理由 */
-:deep(.interview-display .selection-reason) {
+/* Selection Reason - */
+:deep(.interview-display.selection-reason) {
   background: #F8FAFC;
   border: 1px solid #E2E8F0;
   border-radius: 8px;
@@ -3912,7 +3912,7 @@ watch(() => props.reportId, (newId) => {
   margin-bottom: 16px;
 }
 
-:deep(.interview-display .reason-label) {
+:deep(.interview-display.reason-label) {
   font-size: 11px;
   font-weight: 600;
   color: #64748B;
@@ -3921,20 +3921,20 @@ watch(() => props.reportId, (newId) => {
   margin-bottom: 6px;
 }
 
-:deep(.interview-display .reason-content) {
+:deep(.interview-display.reason-content) {
   font-size: 12px;
   color: #475569;
   line-height: 1.6;
 }
 
 /* Q&A Thread - Clean list */
-:deep(.interview-display .qa-thread) {
+:deep(.interview-display.qa-thread) {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-:deep(.interview-display .qa-pair) {
+:deep(.interview-display.qa-pair) {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -3944,13 +3944,13 @@ watch(() => props.reportId, (newId) => {
   border-radius: 0;
 }
 
-:deep(.interview-display .qa-question),
-:deep(.interview-display .qa-answer) {
+:deep(.interview-display.qa-question),
+:deep(.interview-display.qa-answer) {
   display: flex;
   gap: 12px;
 }
 
-:deep(.interview-display .qa-badge) {
+:deep(.interview-display.qa-badge) {
   width: 20px;
   height: 20px;
   display: flex;
@@ -3963,24 +3963,24 @@ watch(() => props.reportId, (newId) => {
   flex-shrink: 0;
 }
 
-:deep(.interview-display .q-badge) {
+:deep(.interview-display.q-badge) {
   background: transparent;
   color: #9CA3AF;
   border: 1px solid #E5E7EB;
 }
 
-:deep(.interview-display .a-badge) {
+:deep(.interview-display.a-badge) {
   background: #4F46E5;
   color: #FFFFFF;
   border: 1px solid #4F46E5;
 }
 
-:deep(.interview-display .qa-content) {
+:deep(.interview-display.qa-content) {
   flex: 1;
   min-width: 0;
 }
 
-:deep(.interview-display .qa-sender) {
+:deep(.interview-display.qa-sender) {
   font-size: 11px;
   font-weight: 600;
   color: #9CA3AF;
@@ -3989,29 +3989,29 @@ watch(() => props.reportId, (newId) => {
   letter-spacing: 0.03em;
 }
 
-:deep(.interview-display .qa-text) {
+:deep(.interview-display.qa-text) {
   font-size: 13px;
   color: #374151;
   line-height: 1.6;
 }
 
-:deep(.interview-display .qa-answer) {
+:deep(.interview-display.qa-answer) {
   background: transparent;
   padding: 0;
   border: none;
   margin-top: 0;
 }
 
-:deep(.interview-display .answer-placeholder) {
+:deep(.interview-display.answer-placeholder) {
   opacity: 0.6;
 }
 
-:deep(.interview-display .placeholder-text) {
+:deep(.interview-display.placeholder-text) {
   font-style: italic;
   color: #9CA3AF;
 }
 
-:deep(.interview-display .qa-answer-header) {
+:deep(.interview-display.qa-answer-header) {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -4019,7 +4019,7 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* Platform Switch */
-:deep(.interview-display .platform-switch) {
+:deep(.interview-display.platform-switch) {
   display: flex;
   gap: 2px;
   background: transparent;
@@ -4027,7 +4027,7 @@ watch(() => props.reportId, (newId) => {
   border-radius: 0;
 }
 
-:deep(.interview-display .platform-btn) {
+:deep(.interview-display.platform-btn) {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -4042,33 +4042,33 @@ watch(() => props.reportId, (newId) => {
   transition: all 0.15s ease;
 }
 
-:deep(.interview-display .platform-btn:hover) {
+:deep(.interview-display.platform-btn:hover) {
   color: #6B7280;
 }
 
-:deep(.interview-display .platform-btn.active) {
+:deep(.interview-display.platform-btn.active) {
   background: transparent;
   color: #4F46E5;
   border-color: #E5E7EB;
   box-shadow: none;
 }
 
-:deep(.interview-display .platform-icon) {
+:deep(.interview-display.platform-icon) {
   flex-shrink: 0;
 }
 
-:deep(.interview-display .answer-text) {
+:deep(.interview-display.answer-text) {
   font-size: 13px;
   color: #111827;
   line-height: 1.6;
 }
 
-:deep(.interview-display .answer-text strong) {
+:deep(.interview-display.answer-text strong) {
   color: #111827;
   font-weight: 600;
 }
 
-:deep(.interview-display .expand-answer-btn) {
+:deep(.interview-display.expand-answer-btn) {
   display: inline-block;
   margin-top: 8px;
   padding: 0;
@@ -4083,14 +4083,14 @@ watch(() => props.reportId, (newId) => {
   transition: all 0.15s ease;
 }
 
-:deep(.interview-display .expand-answer-btn:hover) {
+:deep(.interview-display.expand-answer-btn:hover) {
   background: transparent;
   color: #6B7280;
   border-bottom-style: solid;
 }
 
 /* Quotes Section - Clean list */
-:deep(.interview-display .quotes-section) {
+:deep(.interview-display.quotes-section) {
   background: transparent;
   border: none;
   border-top: 1px solid #F3F4F6;
@@ -4099,7 +4099,7 @@ watch(() => props.reportId, (newId) => {
   margin-top: 16px;
 }
 
-:deep(.interview-display .quotes-header) {
+:deep(.interview-display.quotes-header) {
   font-size: 11px;
   font-weight: 600;
   color: #9CA3AF;
@@ -4108,13 +4108,13 @@ watch(() => props.reportId, (newId) => {
   margin-bottom: 12px;
 }
 
-:deep(.interview-display .quotes-list) {
+:deep(.interview-display.quotes-list) {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-:deep(.interview-display .quote-item) {
+:deep(.interview-display.quote-item) {
   margin: 0;
   padding: 10px 12px;
   background: #FFFFFF;
@@ -4127,7 +4127,7 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* Summary Section */
-:deep(.interview-display .summary-section) {
+:deep(.interview-display.summary-section) {
   margin-top: 20px;
   padding: 16px 0 0 0;
   background: transparent;
@@ -4136,7 +4136,7 @@ watch(() => props.reportId, (newId) => {
   border-radius: 0;
 }
 
-:deep(.interview-display .summary-header) {
+:deep(.interview-display.summary-header) {
   font-size: 11px;
   font-weight: 600;
   color: #9CA3AF;
@@ -4145,59 +4145,59 @@ watch(() => props.reportId, (newId) => {
   margin-bottom: 8px;
 }
 
-:deep(.interview-display .summary-content) {
+:deep(.interview-display.summary-content) {
   font-size: 13px;
   color: #374151;
   line-height: 1.6;
 }
 
 /* Markdown styles in summary */
-:deep(.interview-display .summary-content h2),
-:deep(.interview-display .summary-content h3),
-:deep(.interview-display .summary-content h4),
-:deep(.interview-display .summary-content h5) {
+:deep(.interview-display.summary-content h2),
+:deep(.interview-display.summary-content h3),
+:deep(.interview-display.summary-content h4),
+:deep(.interview-display.summary-content h5) {
   margin: 12px 0 8px 0;
   font-weight: 600;
   color: #111827;
 }
 
-:deep(.interview-display .summary-content h2) {
+:deep(.interview-display.summary-content h2) {
   font-size: 15px;
 }
 
-:deep(.interview-display .summary-content h3) {
+:deep(.interview-display.summary-content h3) {
   font-size: 14px;
 }
 
-:deep(.interview-display .summary-content h4),
-:deep(.interview-display .summary-content h5) {
+:deep(.interview-display.summary-content h4),
+:deep(.interview-display.summary-content h5) {
   font-size: 13px;
 }
 
-:deep(.interview-display .summary-content p) {
+:deep(.interview-display.summary-content p) {
   margin: 8px 0;
 }
 
-:deep(.interview-display .summary-content strong) {
+:deep(.interview-display.summary-content strong) {
   font-weight: 600;
   color: #111827;
 }
 
-:deep(.interview-display .summary-content em) {
+:deep(.interview-display.summary-content em) {
   font-style: italic;
 }
 
-:deep(.interview-display .summary-content ul),
-:deep(.interview-display .summary-content ol) {
+:deep(.interview-display.summary-content ul),
+:deep(.interview-display.summary-content ol) {
   margin: 8px 0;
   padding-left: 20px;
 }
 
-:deep(.interview-display .summary-content li) {
+:deep(.interview-display.summary-content li) {
   margin: 4px 0;
 }
 
-:deep(.interview-display .summary-content blockquote) {
+:deep(.interview-display.summary-content blockquote) {
   margin: 8px 0;
   padding-left: 12px;
   border-left: 3px solid #E5E7EB;
@@ -4206,12 +4206,12 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* Markdown styles in quotes */
-:deep(.interview-display .quote-item strong) {
+:deep(.interview-display.quote-item strong) {
   font-weight: 600;
   color: #374151;
 }
 
-:deep(.interview-display .quote-item em) {
+:deep(.interview-display.quote-item em) {
   font-style: italic;
 }
 
@@ -4228,67 +4228,67 @@ watch(() => props.reportId, (newId) => {
   border-bottom: none;
 }
 
-:deep(.insight-header .header-main) {
+:deep(.insight-header.header-main) {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
 }
 
-:deep(.insight-header .header-title) {
+:deep(.insight-header.header-title) {
   font-size: 14px;
   font-weight: 700;
   color: #6D28D9;
 }
 
-:deep(.insight-header .header-stats) {
+:deep(.insight-header.header-stats) {
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 11px;
 }
 
-:deep(.insight-header .stat-item) {
+:deep(.insight-header.stat-item) {
   display: flex;
   align-items: baseline;
   gap: 2px;
 }
 
-:deep(.insight-header .stat-value) {
+:deep(.insight-header.stat-value) {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
   color: #7C3AED;
 }
 
-:deep(.insight-header .stat-label) {
+:deep(.insight-header.stat-label) {
   color: #8B5CF6;
   font-size: 10px;
 }
 
-:deep(.insight-header .stat-divider) {
+:deep(.insight-header.stat-divider) {
   color: #C4B5FD;
   margin: 0 4px;
 }
 
-:deep(.insight-header .stat-size) {
+:deep(.insight-header.stat-size) {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   color: #9CA3AF;
 }
 
-:deep(.insight-header .header-topic) {
+:deep(.insight-header.header-topic) {
   font-size: 13px;
   color: #5B21B6;
   line-height: 1.5;
 }
 
-:deep(.insight-header .header-scenario) {
+:deep(.insight-header.header-scenario) {
   margin-top: 6px;
   font-size: 11px;
   color: #7C3AED;
 }
 
-:deep(.insight-header .scenario-label) {
+:deep(.insight-header.scenario-label) {
   font-weight: 600;
 }
 
@@ -4337,7 +4337,7 @@ watch(() => props.reportId, (newId) => {
   border-radius: 0 0 8px 8px;
 }
 
-:deep(.insight-display .panel-header) {
+:deep(.insight-display.panel-header) {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -4346,32 +4346,32 @@ watch(() => props.reportId, (newId) => {
   border-bottom: 1px solid #F3F4F6;
 }
 
-:deep(.insight-display .panel-title) {
+:deep(.insight-display.panel-title) {
   font-size: 12px;
   font-weight: 600;
   color: #374151;
 }
 
-:deep(.insight-display .panel-count) {
+:deep(.insight-display.panel-count) {
   font-size: 10px;
   color: #9CA3AF;
 }
 
-:deep(.insight-display .facts-list),
-:deep(.insight-display .relations-list),
-:deep(.insight-display .subqueries-list) {
+:deep(.insight-display.facts-list),
+:deep(.insight-display.relations-list),
+:deep(.insight-display.subqueries-list) {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-:deep(.insight-display .entities-grid) {
+:deep(.insight-display.entities-grid) {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
 
-:deep(.insight-display .fact-item) {
+:deep(.insight-display.fact-item) {
   display: flex;
   gap: 10px;
   padding: 10px 12px;
@@ -4380,7 +4380,7 @@ watch(() => props.reportId, (newId) => {
   border-radius: 6px;
 }
 
-:deep(.insight-display .fact-number) {
+:deep(.insight-display.fact-number) {
   flex-shrink: 0;
   width: 20px;
   height: 20px;
@@ -4395,7 +4395,7 @@ watch(() => props.reportId, (newId) => {
   color: #6B7280;
 }
 
-:deep(.insight-display .fact-content) {
+:deep(.insight-display.fact-content) {
   flex: 1;
   font-size: 12px;
   color: #374151;
@@ -4403,7 +4403,7 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* Entity Tag Styles - Compact multi-column layout */
-:deep(.insight-display .entity-tag) {
+:deep(.insight-display.entity-tag) {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -4415,18 +4415,18 @@ watch(() => props.reportId, (newId) => {
   transition: all 0.15s ease;
 }
 
-:deep(.insight-display .entity-tag:hover) {
+:deep(.insight-display.entity-tag:hover) {
   background: #F3F4F6;
   border-color: #D1D5DB;
 }
 
-:deep(.insight-display .entity-tag .entity-name) {
+:deep(.insight-display.entity-tag.entity-name) {
   font-size: 12px;
   font-weight: 500;
   color: #111827;
 }
 
-:deep(.insight-display .entity-tag .entity-type) {
+:deep(.insight-display.entity-tag.entity-type) {
   font-size: 9px;
   color: #7C3AED;
   background: #EDE9FE;
@@ -4434,37 +4434,37 @@ watch(() => props.reportId, (newId) => {
   border-radius: 3px;
 }
 
-:deep(.insight-display .entity-tag .entity-fact-count) {
+:deep(.insight-display.entity-tag.entity-fact-count) {
   font-size: 9px;
   color: #9CA3AF;
   margin-left: 2px;
 }
 
 /* Legacy entity card styles for backwards compatibility */
-:deep(.insight-display .entity-card) {
+:deep(.insight-display.entity-card) {
   padding: 12px;
   background: #F9FAFB;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
 }
 
-:deep(.insight-display .entity-header) {
+:deep(.insight-display.entity-header) {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-:deep(.insight-display .entity-info) {
+:deep(.insight-display.entity-info) {
   flex: 1;
 }
 
-:deep(.insight-display .entity-card .entity-name) {
+:deep(.insight-display.entity-card.entity-name) {
   font-size: 13px;
   font-weight: 600;
   color: #111827;
 }
 
-:deep(.insight-display .entity-card .entity-type) {
+:deep(.insight-display.entity-card.entity-type) {
   font-size: 10px;
   color: #7C3AED;
   background: #EDE9FE;
@@ -4474,7 +4474,7 @@ watch(() => props.reportId, (newId) => {
   margin-top: 2px;
 }
 
-:deep(.insight-display .entity-card .entity-fact-count) {
+:deep(.insight-display.entity-card.entity-fact-count) {
   font-size: 10px;
   color: #9CA3AF;
   background: #F3F4F6;
@@ -4482,7 +4482,7 @@ watch(() => props.reportId, (newId) => {
   border-radius: 4px;
 }
 
-:deep(.insight-display .entity-summary) {
+:deep(.insight-display.entity-summary) {
   margin-top: 8px;
   padding-top: 8px;
   border-top: 1px solid #E5E7EB;
@@ -4492,7 +4492,7 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* Relation Item Styles */
-:deep(.insight-display .relation-item) {
+:deep(.insight-display.relation-item) {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -4502,8 +4502,8 @@ watch(() => props.reportId, (newId) => {
   border-radius: 6px;
 }
 
-:deep(.insight-display .rel-source),
-:deep(.insight-display .rel-target) {
+:deep(.insight-display.rel-source),
+:deep(.insight-display.rel-target) {
   padding: 4px 8px;
   background: #FFFFFF;
   border: 1px solid #D1D5DB;
@@ -4513,20 +4513,20 @@ watch(() => props.reportId, (newId) => {
   color: #374151;
 }
 
-:deep(.insight-display .rel-arrow) {
+:deep(.insight-display.rel-arrow) {
   display: flex;
   align-items: center;
   gap: 4px;
   flex: 1;
 }
 
-:deep(.insight-display .rel-line) {
+:deep(.insight-display.rel-line) {
   flex: 1;
   height: 1px;
   background: #D1D5DB;
 }
 
-:deep(.insight-display .rel-label) {
+:deep(.insight-display.rel-label) {
   padding: 2px 6px;
   background: #EDE9FE;
   border-radius: 4px;
@@ -4537,7 +4537,7 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* Sub-query Styles */
-:deep(.insight-display .subquery-item) {
+:deep(.insight-display.subquery-item) {
   display: flex;
   gap: 10px;
   padding: 10px 12px;
@@ -4546,7 +4546,7 @@ watch(() => props.reportId, (newId) => {
   border-radius: 6px;
 }
 
-:deep(.insight-display .subquery-number) {
+:deep(.insight-display.subquery-number) {
   flex-shrink: 0;
   padding: 2px 6px;
   background: #7C3AED;
@@ -4557,16 +4557,16 @@ watch(() => props.reportId, (newId) => {
   color: #FFFFFF;
 }
 
-:deep(.insight-display .subquery-text) {
+:deep(.insight-display.subquery-text) {
   font-size: 12px;
   color: #374151;
   line-height: 1.5;
 }
 
 /* Expand Button */
-:deep(.insight-display .expand-btn),
-:deep(.panorama-display .expand-btn),
-:deep(.quick-search-display .expand-btn) {
+:deep(.insight-display.expand-btn),
+:deep(.panorama-display.expand-btn),
+:deep(.quick-search-display.expand-btn) {
   display: block;
   width: 100%;
   margin-top: 12px;
@@ -4582,18 +4582,18 @@ watch(() => props.reportId, (newId) => {
   text-align: center;
 }
 
-:deep(.insight-display .expand-btn:hover),
-:deep(.panorama-display .expand-btn:hover),
-:deep(.quick-search-display .expand-btn:hover) {
+:deep(.insight-display.expand-btn:hover),
+:deep(.panorama-display.expand-btn:hover),
+:deep(.quick-search-display.expand-btn:hover) {
   background: #F3F4F6;
   color: #374151;
   border-color: #D1D5DB;
 }
 
 /* Empty State */
-:deep(.insight-display .empty-state),
-:deep(.panorama-display .empty-state),
-:deep(.quick-search-display .empty-state) {
+:deep(.insight-display.empty-state),
+:deep(.panorama-display.empty-state),
+:deep(.quick-search-display.empty-state) {
   padding: 24px;
   text-align: center;
   font-size: 12px;
@@ -4613,55 +4613,55 @@ watch(() => props.reportId, (newId) => {
   border-bottom: none;
 }
 
-:deep(.panorama-header .header-main) {
+:deep(.panorama-header.header-main) {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
 }
 
-:deep(.panorama-header .header-title) {
+:deep(.panorama-header.header-title) {
   font-size: 14px;
   font-weight: 700;
   color: #1D4ED8;
 }
 
-:deep(.panorama-header .header-stats) {
+:deep(.panorama-header.header-stats) {
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 11px;
 }
 
-:deep(.panorama-header .stat-item) {
+:deep(.panorama-header.stat-item) {
   display: flex;
   align-items: baseline;
   gap: 2px;
 }
 
-:deep(.panorama-header .stat-value) {
+:deep(.panorama-header.stat-value) {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
   color: #2563EB;
 }
 
-:deep(.panorama-header .stat-label) {
+:deep(.panorama-header.stat-label) {
   color: #60A5FA;
   font-size: 10px;
 }
 
-:deep(.panorama-header .stat-divider) {
+:deep(.panorama-header.stat-divider) {
   color: #93C5FD;
   margin: 0 4px;
 }
 
-:deep(.panorama-header .stat-size) {
+:deep(.panorama-header.stat-size) {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   color: #9CA3AF;
 }
 
-:deep(.panorama-header .header-topic) {
+:deep(.panorama-header.header-topic) {
   font-size: 13px;
   color: #1E40AF;
   line-height: 1.5;
@@ -4712,7 +4712,7 @@ watch(() => props.reportId, (newId) => {
   border-radius: 0 0 8px 8px;
 }
 
-:deep(.panorama-display .panel-header) {
+:deep(.panorama-display.panel-header) {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -4721,24 +4721,24 @@ watch(() => props.reportId, (newId) => {
   border-bottom: 1px solid #F3F4F6;
 }
 
-:deep(.panorama-display .panel-title) {
+:deep(.panorama-display.panel-title) {
   font-size: 12px;
   font-weight: 600;
   color: #374151;
 }
 
-:deep(.panorama-display .panel-count) {
+:deep(.panorama-display.panel-count) {
   font-size: 10px;
   color: #9CA3AF;
 }
 
-:deep(.panorama-display .facts-list) {
+:deep(.panorama-display.facts-list) {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-:deep(.panorama-display .fact-item) {
+:deep(.panorama-display.fact-item) {
   display: flex;
   gap: 10px;
   padding: 10px 12px;
@@ -4747,17 +4747,17 @@ watch(() => props.reportId, (newId) => {
   border-radius: 6px;
 }
 
-:deep(.panorama-display .fact-item.active) {
+:deep(.panorama-display.fact-item.active) {
   background: #F9FAFB;
   border-color: #E5E7EB;
 }
 
-:deep(.panorama-display .fact-item.historical) {
+:deep(.panorama-display.fact-item.historical) {
   background: #F9FAFB;
   border-color: #E5E7EB;
 }
 
-:deep(.panorama-display .fact-number) {
+:deep(.panorama-display.fact-number) {
   flex-shrink: 0;
   width: 20px;
   height: 20px;
@@ -4772,24 +4772,24 @@ watch(() => props.reportId, (newId) => {
   color: #6B7280;
 }
 
-:deep(.panorama-display .fact-item.active .fact-number) {
+:deep(.panorama-display.fact-item.active.fact-number) {
   background: #E5E7EB;
   color: #6B7280;
 }
 
-:deep(.panorama-display .fact-item.historical .fact-number) {
+:deep(.panorama-display.fact-item.historical.fact-number) {
   background: #9CA3AF;
   color: #FFFFFF;
 }
 
-:deep(.panorama-display .fact-content) {
+:deep(.panorama-display.fact-content) {
   flex: 1;
   font-size: 12px;
   color: #374151;
   line-height: 1.6;
 }
 
-:deep(.panorama-display .fact-time) {
+:deep(.panorama-display.fact-time) {
   display: block;
   font-size: 10px;
   color: #9CA3AF;
@@ -4797,18 +4797,18 @@ watch(() => props.reportId, (newId) => {
   font-family: 'JetBrains Mono', monospace;
 }
 
-:deep(.panorama-display .fact-text) {
+:deep(.panorama-display.fact-text) {
   display: block;
 }
 
 /* Entities Grid */
-:deep(.panorama-display .entities-grid) {
+:deep(.panorama-display.entities-grid) {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-:deep(.panorama-display .entity-tag) {
+:deep(.panorama-display.entity-tag) {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -4818,13 +4818,13 @@ watch(() => props.reportId, (newId) => {
   border-radius: 6px;
 }
 
-:deep(.panorama-display .entity-name) {
+:deep(.panorama-display.entity-name) {
   font-size: 12px;
   font-weight: 500;
   color: #374151;
 }
 
-:deep(.panorama-display .entity-type) {
+:deep(.panorama-display.entity-type) {
   font-size: 10px;
   color: #2563EB;
   background: #DBEAFE;
@@ -4845,61 +4845,61 @@ watch(() => props.reportId, (newId) => {
   border-bottom: none;
 }
 
-:deep(.quicksearch-header .header-main) {
+:deep(.quicksearch-header.header-main) {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
 }
 
-:deep(.quicksearch-header .header-title) {
+:deep(.quicksearch-header.header-title) {
   font-size: 14px;
   font-weight: 700;
   color: #C2410C;
 }
 
-:deep(.quicksearch-header .header-stats) {
+:deep(.quicksearch-header.header-stats) {
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 11px;
 }
 
-:deep(.quicksearch-header .stat-item) {
+:deep(.quicksearch-header.stat-item) {
   display: flex;
   align-items: baseline;
   gap: 2px;
 }
 
-:deep(.quicksearch-header .stat-value) {
+:deep(.quicksearch-header.stat-value) {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
   color: #EA580C;
 }
 
-:deep(.quicksearch-header .stat-label) {
+:deep(.quicksearch-header.stat-label) {
   color: #FB923C;
   font-size: 10px;
 }
 
-:deep(.quicksearch-header .stat-divider) {
+:deep(.quicksearch-header.stat-divider) {
   color: #FDBA74;
   margin: 0 4px;
 }
 
-:deep(.quicksearch-header .stat-size) {
+:deep(.quicksearch-header.stat-size) {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   color: #9CA3AF;
 }
 
-:deep(.quicksearch-header .header-query) {
+:deep(.quicksearch-header.header-query) {
   font-size: 13px;
   color: #9A3412;
   line-height: 1.5;
 }
 
-:deep(.quicksearch-header .query-label) {
+:deep(.quicksearch-header.query-label) {
   font-weight: 600;
 }
 
@@ -4953,7 +4953,7 @@ watch(() => props.reportId, (newId) => {
   border-top: none;
 }
 
-:deep(.quick-search-display .panel-header) {
+:deep(.quick-search-display.panel-header) {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -4962,24 +4962,24 @@ watch(() => props.reportId, (newId) => {
   border-bottom: 1px solid #F3F4F6;
 }
 
-:deep(.quick-search-display .panel-title) {
+:deep(.quick-search-display.panel-title) {
   font-size: 12px;
   font-weight: 600;
   color: #374151;
 }
 
-:deep(.quick-search-display .panel-count) {
+:deep(.quick-search-display.panel-count) {
   font-size: 10px;
   color: #9CA3AF;
 }
 
-:deep(.quick-search-display .facts-list) {
+:deep(.quick-search-display.facts-list) {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-:deep(.quick-search-display .fact-item) {
+:deep(.quick-search-display.fact-item) {
   display: flex;
   gap: 10px;
   padding: 10px 12px;
@@ -4988,12 +4988,12 @@ watch(() => props.reportId, (newId) => {
   border-radius: 6px;
 }
 
-:deep(.quick-search-display .fact-item.active) {
+:deep(.quick-search-display.fact-item.active) {
   background: #F9FAFB;
   border-color: #E5E7EB;
 }
 
-:deep(.quick-search-display .fact-number) {
+:deep(.quick-search-display.fact-number) {
   flex-shrink: 0;
   width: 20px;
   height: 20px;
@@ -5008,12 +5008,12 @@ watch(() => props.reportId, (newId) => {
   color: #6B7280;
 }
 
-:deep(.quick-search-display .fact-item.active .fact-number) {
+:deep(.quick-search-display.fact-item.active.fact-number) {
   background: #E5E7EB;
   color: #6B7280;
 }
 
-:deep(.quick-search-display .fact-content) {
+:deep(.quick-search-display.fact-content) {
   flex: 1;
   font-size: 12px;
   color: #374151;
@@ -5021,13 +5021,13 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* Edges Panel */
-:deep(.quick-search-display .edges-list) {
+:deep(.quick-search-display.edges-list) {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-:deep(.quick-search-display .edge-item) {
+:deep(.quick-search-display.edge-item) {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -5037,8 +5037,8 @@ watch(() => props.reportId, (newId) => {
   border-radius: 6px;
 }
 
-:deep(.quick-search-display .edge-source),
-:deep(.quick-search-display .edge-target) {
+:deep(.quick-search-display.edge-source),
+:deep(.quick-search-display.edge-target) {
   padding: 4px 8px;
   background: #FFFFFF;
   border: 1px solid #D1D5DB;
@@ -5048,20 +5048,20 @@ watch(() => props.reportId, (newId) => {
   color: #374151;
 }
 
-:deep(.quick-search-display .edge-arrow) {
+:deep(.quick-search-display.edge-arrow) {
   display: flex;
   align-items: center;
   gap: 4px;
   flex: 1;
 }
 
-:deep(.quick-search-display .edge-line) {
+:deep(.quick-search-display.edge-line) {
   flex: 1;
   height: 1px;
   background: #D1D5DB;
 }
 
-:deep(.quick-search-display .edge-label) {
+:deep(.quick-search-display.edge-label) {
   padding: 2px 6px;
   background: #FFEDD5;
   border-radius: 4px;
@@ -5072,13 +5072,13 @@ watch(() => props.reportId, (newId) => {
 }
 
 /* Nodes Grid */
-:deep(.quick-search-display .nodes-grid) {
+:deep(.quick-search-display.nodes-grid) {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-:deep(.quick-search-display .node-tag) {
+:deep(.quick-search-display.node-tag) {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -5088,13 +5088,13 @@ watch(() => props.reportId, (newId) => {
   border-radius: 6px;
 }
 
-:deep(.quick-search-display .node-name) {
+:deep(.quick-search-display.node-name) {
   font-size: 12px;
   font-weight: 500;
   color: #374151;
 }
 
-:deep(.quick-search-display .node-type) {
+:deep(.quick-search-display.node-type) {
   font-size: 10px;
   color: #EA580C;
   background: #FFEDD5;
@@ -5102,7 +5102,7 @@ watch(() => props.reportId, (newId) => {
   border-radius: 4px;
 }
 
-/* Console Logs - 与 Step3Simulation.vue 保持一致 */
+/* Console Logs - Step3Simulation.vue */
 .console-logs {
   background: #000;
   color: #DDD;
@@ -5156,7 +5156,7 @@ watch(() => props.reportId, (newId) => {
 
 <style>
 /* English locale: smaller report title */
-html[lang="en"] .report-header-block .main-title {
+html[lang="en"].report-header-block.main-title {
   font-size: 28px;
 }
 </style>

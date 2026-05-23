@@ -20,12 +20,12 @@
           <div class="sections-list">
             <div 
               v-for="(section, idx) in reportOutline.sections" 
-              :key="idx"
+:key="idx"
               class="report-section-item"
-              :class="{ 
+:class="{ 
                 'is-active': currentSectionIndex === idx + 1,
                 'is-completed': isSectionCompleted(idx + 1),
-                'is-pending': !isSectionCompleted(idx + 1) && currentSectionIndex !== idx + 1
+                'is-pending':!isSectionCompleted(idx + 1) && currentSectionIndex!== idx + 1
               }"
             >
               <div class="section-header-row" @click="toggleSectionCollapse(idx)" :class="{ 'clickable': isSectionCompleted(idx + 1) }">
@@ -34,7 +34,7 @@
                 <svg 
                   v-if="isSectionCompleted(idx + 1)" 
                   class="collapse-icon" 
-                  :class="{ 'is-collapsed': collapsedSections.has(idx) }"
+:class="{ 'is-collapsed': collapsedSections.has(idx) }"
                   viewBox="0 0 24 24" 
                   width="20" 
                   height="20" 
@@ -92,7 +92,7 @@
           <div class="action-bar-tabs">
             <button 
               class="tab-pill"
-              :class="{ active: activeTab === 'chat' && chatTarget === 'report_agent' }"
+:class="{ active: activeTab === 'chat' && chatTarget === 'report_agent' }"
               @click="selectReportAgentChat"
             >
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
@@ -103,14 +103,14 @@
             <div class="agent-dropdown" v-if="profiles.length > 0">
               <button 
                 class="tab-pill agent-pill"
-                :class="{ active: activeTab === 'chat' && chatTarget === 'agent' }"
+:class="{ active: activeTab === 'chat' && chatTarget === 'agent' }"
                 @click="toggleAgentDropdown"
               >
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-                <span>{{ selectedAgent ? selectedAgent.username : $t('step5.chatWithAgent') }}</span>
+                <span>{{ selectedAgent? selectedAgent.username: $t('step5.chatWithAgent') }}</span>
                 <svg class="dropdown-arrow" :class="{ open: showAgentDropdown }" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
@@ -119,7 +119,7 @@
                 <div class="dropdown-header">{{ $t('step5.selectChatTarget') }}</div>
                 <div 
                   v-for="(agent, idx) in profiles" 
-                  :key="idx"
+:key="idx"
                   class="dropdown-item"
                   @click="selectAgent(agent, idx)"
                 >
@@ -134,7 +134,7 @@
             <div class="tab-divider"></div>
             <button
               class="tab-pill survey-pill"
-              :class="{ active: activeTab === 'survey' }"
+:class="{ active: activeTab === 'survey' }"
               @click="selectSurveyTab"
             >
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
@@ -157,7 +157,7 @@
                 <div class="tools-card-name">{{ $t('step5.reportAgentChat') }}</div>
                 <div class="tools-card-subtitle">{{ $t('step5.reportAgentDesc') }}</div>
               </div>
-              <button class="tools-card-toggle" @click="showToolsDetail = !showToolsDetail">
+              <button class="tools-card-toggle" @click="showToolsDetail =!showToolsDetail">
                 <svg :class="{ 'is-expanded': showToolsDetail }" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
@@ -227,7 +227,7 @@
                   <span class="profile-card-profession">{{ selectedAgent.profession || $t('step2.unknownProfession') }}</span>
                 </div>
               </div>
-              <button class="profile-card-toggle" @click="showFullProfile = !showFullProfile">
+              <button class="profile-card-toggle" @click="showFullProfile =!showFullProfile">
                 <svg :class="{ 'is-expanded': showFullProfile }" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
@@ -250,23 +250,23 @@
                 </svg>
               </div>
               <p class="empty-text">
-                {{ chatTarget === 'report_agent' ? $t('step5.chatEmptyReportAgent') : $t('step5.chatEmptyAgent') }}
+                {{ chatTarget === 'report_agent'? $t('step5.chatEmptyReportAgent'): $t('step5.chatEmptyAgent') }}
               </p>
             </div>
             <div 
               v-for="(msg, idx) in chatHistory" 
-              :key="idx"
+:key="idx"
               class="chat-message"
-              :class="msg.role"
+:class="msg.role"
             >
               <div class="message-avatar">
                 <span v-if="msg.role === 'user'">U</span>
-                <span v-else>{{ msg.role === 'assistant' && chatTarget === 'report_agent' ? 'R' : (selectedAgent?.username?.[0] || 'A') }}</span>
+                <span v-else>{{ msg.role === 'assistant' && chatTarget === 'report_agent'? 'R': (selectedAgent?.username?.[0] || 'A') }}</span>
               </div>
               <div class="message-content">
                 <div class="message-header">
                   <span class="sender-name">
-                    {{ msg.role === 'user' ? 'You' : (chatTarget === 'report_agent' ? 'Report Agent' : (selectedAgent?.username || 'Agent')) }}
+                    {{ msg.role === 'user'? 'You': (chatTarget === 'report_agent'? 'Report Agent': (selectedAgent?.username || 'Agent')) }}
                   </span>
                   <span class="message-time">{{ formatTime(msg.timestamp) }}</span>
                 </div>
@@ -275,7 +275,7 @@
             </div>
             <div v-if="isSending" class="chat-message assistant">
               <div class="message-avatar">
-                <span>{{ chatTarget === 'report_agent' ? 'R' : (selectedAgent?.username?.[0] || 'A') }}</span>
+                <span>{{ chatTarget === 'report_agent'? 'R': (selectedAgent?.username?.[0] || 'A') }}</span>
               </div>
               <div class="message-content">
                 <div class="typing-indicator">
@@ -292,16 +292,16 @@
             <textarea 
               v-model="chatInput"
               class="chat-input"
-              :placeholder="$t('step5.chatInputPlaceholder')"
+:placeholder="$t('step5.chatInputPlaceholder')"
               @keydown.enter.exact.prevent="sendMessage"
-              :disabled="isSending || (!selectedAgent && chatTarget === 'agent')"
+:disabled="isSending || (!selectedAgent && chatTarget === 'agent')"
               rows="1"
               ref="chatInputRef"
             ></textarea>
             <button 
               class="send-btn"
               @click="sendMessage"
-              :disabled="!chatInput.trim() || isSending || (!selectedAgent && chatTarget === 'agent')"
+:disabled="!chatInput.trim() || isSending || (!selectedAgent && chatTarget === 'agent')"
             >
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -323,13 +323,13 @@
               <div class="agents-grid">
                 <label 
                   v-for="(agent, idx) in profiles" 
-                  :key="idx"
+:key="idx"
                   class="agent-checkbox"
-                  :class="{ checked: selectedAgents.has(idx) }"
+:class="{ checked: selectedAgents.has(idx) }"
                 >
                   <input 
                     type="checkbox" 
-                    :checked="selectedAgents.has(idx)"
+:checked="selectedAgents.has(idx)"
                     @change="toggleAgentSelection(idx)"
                   >
                   <div class="checkbox-avatar">{{ (agent.username || 'A')[0] }}</div>
@@ -358,14 +358,14 @@
               <textarea 
                 v-model="surveyQuestion"
                 class="survey-input"
-                :placeholder="$t('step5.surveyInputPlaceholder')"
+:placeholder="$t('step5.surveyInputPlaceholder')"
                 rows="3"
               ></textarea>
             </div>
 
             <button 
               class="survey-submit-btn"
-              :disabled="selectedAgents.size === 0 || !surveyQuestion.trim() || isSurveying"
+:disabled="selectedAgents.size === 0 ||!surveyQuestion.trim() || isSurveying"
               @click="submitSurvey"
             >
               <span v-if="isSurveying" class="loading-spinner"></span>
@@ -382,7 +382,7 @@
             <div class="results-list">
               <div 
                 v-for="(result, idx) in surveyResults" 
-                :key="idx"
+:key="idx"
                 class="result-card"
               >
                 <div class="result-header">
@@ -437,7 +437,7 @@ const showToolsDetail = ref(true)
 // Chat State
 const chatInput = ref('')
 const chatHistory = ref([])
-const chatHistoryCache = ref({}) // 缓存所有对话记录: { 'report_agent': [], 'agent_0': [], 'agent_1': [], ... }
+const chatHistoryCache = ref({}) //: { 'report_agent': [], 'agent_0': [], 'agent_1': [],... }
 const isSending = ref(false)
 const chatMessages = ref(null)
 const chatInputRef = ref(null)
@@ -457,7 +457,7 @@ const profiles = ref([])
 
 // Helper Methods
 const isSectionCompleted = (sectionIndex) => {
-  return !!generatedSections.value[sectionIndex]
+  return!!generatedSections.value[sectionIndex]
 }
 
 // Refs
@@ -487,19 +487,19 @@ const selectChatTarget = (target) => {
   }
 }
 
-// 保存当前对话记录到缓存
+// 
 const saveChatHistory = () => {
   if (chatHistory.value.length === 0) return
   
   if (chatTarget.value === 'report_agent') {
     chatHistoryCache.value['report_agent'] = [...chatHistory.value]
-  } else if (selectedAgentIndex.value !== null) {
+  } else if (selectedAgentIndex.value!== null) {
     chatHistoryCache.value[`agent_${selectedAgentIndex.value}`] = [...chatHistory.value]
   }
 }
 
 const selectReportAgentChat = () => {
-  // 保存当前对话记录
+  // 
   saveChatHistory()
   
   activeTab.value = 'chat'
@@ -508,7 +508,7 @@ const selectReportAgentChat = () => {
   selectedAgentIndex.value = null
   showAgentDropdown.value = false
   
-  // 恢复 Report Agent 的对话记录
+  // Report Agent 
   chatHistory.value = chatHistoryCache.value['report_agent'] || []
 }
 
@@ -520,7 +520,7 @@ const selectSurveyTab = () => {
 }
 
 const toggleAgentDropdown = () => {
-  showAgentDropdown.value = !showAgentDropdown.value
+  showAgentDropdown.value =!showAgentDropdown.value
   if (showAgentDropdown.value) {
     activeTab.value = 'chat'
     chatTarget.value = 'agent'
@@ -528,7 +528,7 @@ const toggleAgentDropdown = () => {
 }
 
 const selectAgent = (agent, idx) => {
-  // 保存当前对话记录
+  // 
   saveChatHistory()
   
   selectedAgent.value = agent
@@ -536,7 +536,7 @@ const selectAgent = (agent, idx) => {
   chatTarget.value = 'agent'
   showAgentDropdown.value = false
   
-  // 恢复该 Agent 的对话记录
+  // Agent 
   chatHistory.value = chatHistoryCache.value[`agent_${idx}`] || []
   addLog(t('log.selectChatTarget', { name: agent.username }))
 }
@@ -566,7 +566,7 @@ const renderMarkdown = (content) => {
   html = html.replace(/^# (.+)$/gm, '<h2 class="md-h2">$1</h2>')
   html = html.replace(/^> (.+)$/gm, '<blockquote class="md-quote">$1</blockquote>')
   
-  // 处理列表 - 支持子列表
+  // list - list
   html = html.replace(/^(\s*)- (.+)$/gm, (match, indent, text) => {
     const level = Math.floor(indent.length / 2)
     return `<li class="md-li" data-level="${level}">${text}</li>`
@@ -576,17 +576,17 @@ const renderMarkdown = (content) => {
     return `<li class="md-oli" data-level="${level}">${text}</li>`
   })
   
-  // 包装无序列表
+  // nonelist
   html = html.replace(/(<li class="md-li"[^>]*>.*?<\/li>\s*)+/g, '<ul class="md-ul">$&</ul>')
-  // 包装有序列表
+  // list
   html = html.replace(/(<li class="md-oli"[^>]*>.*?<\/li>\s*)+/g, '<ol class="md-ol">$&</ol>')
   
-  // 清理列表项之间的所有空白
+  // list
   html = html.replace(/<\/li>\s+<li/g, '</li><li')
-  // 清理列表开始标签后的空白
+  // list
   html = html.replace(/<ul class="md-ul">\s+/g, '<ul class="md-ul">')
   html = html.replace(/<ol class="md-ol">\s+/g, '<ol class="md-ol">')
-  // 清理列表结束标签前的空白
+  // list
   html = html.replace(/\s+<\/ul>/g, '</ul>')
   html = html.replace(/\s+<\/ol>/g, '</ol>')
   
@@ -602,17 +602,17 @@ const renderMarkdown = (content) => {
   html = html.replace(/(<\/h[2-5]>)<\/p>/g, '$1')
   html = html.replace(/<p class="md-p">(<ul|<ol|<blockquote|<pre|<hr)/g, '$1')
   html = html.replace(/(<\/ul>|<\/ol>|<\/blockquote>|<\/pre>)<\/p>/g, '$1')
-  // 清理块级元素前后的 <br> 标签
+  // <br> 
   html = html.replace(/<br>\s*(<ul|<ol|<blockquote)/g, '$1')
   html = html.replace(/(<\/ul>|<\/ol>|<\/blockquote>)\s*<br>/g, '$1')
-  // 清理 <p><br> 紧跟块级元素的情况（多余空行导致）
+  // <p><br> （）
   html = html.replace(/<p class="md-p">(<br>\s*)+(<ul|<ol|<blockquote|<pre|<hr)/g, '$2')
-  // 清理连续的 <br> 标签
+  // <br> 
   html = html.replace(/(<br>\s*){2,}/g, '<br>')
-  // 清理块级元素后紧跟的段落开始标签前的 <br>
+  // <br>
   html = html.replace(/(<\/ol>|<\/ul>|<\/blockquote>)<br>(<p|<div)/g, '$1$2')
 
-  // 修复非连续有序列表的编号：当单项 <ol> 被段落内容隔开时，保持编号递增
+  // list： <ol> content，
   const tokens = html.split(/(<ol class="md-ol">(?:<li class="md-oli"[^>]*>[\s\S]*?<\/li>)+<\/ol>)/g)
   let olCounter = 0
   let inSequence = false
@@ -674,7 +674,7 @@ const sendMessage = async () => {
   } finally {
     isSending.value = false
     scrollToBottom()
-    // 自动保存对话记录到缓存
+    // 
     saveChatHistory()
   }
 }
@@ -684,9 +684,9 @@ const sendToReportAgent = async (message) => {
   
   // Build chat history for API
   const historyForApi = chatHistory.value
-    .filter(msg => msg.role !== 'user' || msg.content !== message)
-    .slice(-10) // Keep last 10 messages
-    .map(msg => ({
+.filter(msg => msg.role!== 'user' || msg.content!== message)
+.slice(-10) // Keep last 10 messages
+.map(msg => ({
       role: msg.role,
       content: msg.content
     }))
@@ -720,11 +720,11 @@ const sendToAgent = async (message) => {
   let prompt = message
   if (chatHistory.value.length > 1) {
     const historyContext = chatHistory.value
-      .filter(msg => msg.content !== message)
-      .slice(-6)
-      .map(msg => `${msg.role === 'user' ? '提问者' : '你'}：${msg.content}`)
-      .join('\n')
-    prompt = `以下是我们之前的对话：\n${historyContext}\n\n现在我的新问题是：${message}`
+.filter(msg => msg.content!== message)
+.slice(-6)
+.map(msg => `${msg.role === 'user' ? 'User' : 'Agent'}: ${msg.content}`)
+.join('\n')
+    prompt = `Conversation history:\n${historyContext}\n\nCurrent message: ${message}`
   }
   
   const res = await interviewAgents({
@@ -736,17 +736,17 @@ const sendToAgent = async (message) => {
   })
   
   if (res.success && res.data) {
-    // 正确的数据路径: res.data.result.results 是一个对象字典
-    // 格式: {"twitter_0": {...}, "reddit_0": {...}} 或单平台 {"reddit_0": {...}}
+    // datapath: res.data.result.results 
+    //: {"twitter_0": {...}, "reddit_0": {...}} platform {"reddit_0": {...}}
     const resultData = res.data.result || res.data
     const resultsDict = resultData.results || resultData
     
-    // 将对象字典转换为数组，优先获取 reddit 平台的回复
+    // ，get reddit platform
     let responseContent = null
     const agentId = selectedAgentIndex.value
     
-    if (typeof resultsDict === 'object' && !Array.isArray(resultsDict)) {
-      // 优先使用 reddit 平台回复，其次 twitter
+    if (typeof resultsDict === 'object' &&!Array.isArray(resultsDict)) {
+      // reddit platform， twitter
       const redditKey = `reddit_${agentId}`
       const twitterKey = `twitter_${agentId}`
       const agentResult = resultsDict[redditKey] || resultsDict[twitterKey] || Object.values(resultsDict)[0]
@@ -754,7 +754,7 @@ const sendToAgent = async (message) => {
         responseContent = agentResult.response || agentResult.answer
       }
     } else if (Array.isArray(resultsDict) && resultsDict.length > 0) {
-      // 兼容数组格式
+      // 
       responseContent = resultsDict[0].response || resultsDict[0].answer
     }
     
@@ -803,7 +803,7 @@ const clearAgentSelection = () => {
 }
 
 const submitSurvey = async () => {
-  if (selectedAgents.value.size === 0 || !surveyQuestion.value.trim()) return
+  if (selectedAgents.value.size === 0 ||!surveyQuestion.value.trim()) return
   
   isSurveying.value = true
   addLog(t('log.sendSurvey', { count: selectedAgents.value.size }))
@@ -820,22 +820,22 @@ const submitSurvey = async () => {
     })
     
     if (res.success && res.data) {
-      // 正确的数据路径: res.data.result.results 是一个对象字典
-      // 格式: {"twitter_0": {...}, "reddit_0": {...}, "twitter_1": {...}, ...}
+      // datapath: res.data.result.results 
+      //: {"twitter_0": {...}, "reddit_0": {...}, "twitter_1": {...},...}
       const resultData = res.data.result || res.data
       const resultsDict = resultData.results || resultData
       
-      // 将对象字典转换为数组格式
+      // 
       const surveyResultsList = []
       
       for (const interview of interviews) {
         const agentIdx = interview.agent_id
         const agent = profiles.value[agentIdx]
         
-        // 优先使用 reddit 平台回复，其次 twitter
+        // reddit platform， twitter
         let responseContent = t('step5.noResponse')
 
-        if (typeof resultsDict === 'object' && !Array.isArray(resultsDict)) {
+        if (typeof resultsDict === 'object' &&!Array.isArray(resultsDict)) {
           const redditKey = `reddit_${agentIdx}`
           const twitterKey = `twitter_${agentIdx}`
           const agentResult = resultsDict[redditKey] || resultsDict[twitterKey]
@@ -843,7 +843,7 @@ const submitSurvey = async () => {
             responseContent = agentResult.response || agentResult.answer || t('step5.noResponse')
           }
         } else if (Array.isArray(resultsDict)) {
-          // 兼容数组格式
+          // 
           const matchedResult = resultsDict.find(r => r.agent_id === agentIdx)
           if (matchedResult) {
             responseContent = matchedResult.response || matchedResult.answer || t('step5.noResponse')
@@ -931,7 +931,7 @@ const loadProfiles = async () => {
 // Click outside to close dropdown
 const handleClickOutside = (e) => {
   const dropdown = document.querySelector('.agent-dropdown')
-  if (dropdown && !dropdown.contains(e.target)) {
+  if (dropdown &&!dropdown.contains(e.target)) {
     showAgentDropdown.value = false
   }
 }
@@ -983,7 +983,7 @@ watch(() => props.simulationId, (newId) => {
   overflow: hidden;
 }
 
-/* Left Panel - Report Style (与 Step4Report.vue 完全一致) */
+/* Left Panel - Report Style ( Step4Report.vue ) */
 .left-panel.report-style {
   width: 45%;
   min-width: 450px;
@@ -1139,20 +1139,20 @@ watch(() => props.simulationId, (newId) => {
 }
 
 /* States */
-.report-section-item.is-pending .section-number {
+.report-section-item.is-pending.section-number {
   color: #E5E7EB;
 }
-.report-section-item.is-pending .section-title {
+.report-section-item.is-pending.section-title {
   color: #D1D5DB;
 }
 
-.report-section-item.is-active .section-number,
-.report-section-item.is-completed .section-number {
+.report-section-item.is-active.section-number,
+.report-section-item.is-completed.section-number {
   color: #9CA3AF;
 }
 
-.report-section-item.is-active .section-title,
-.report-section-item.is-completed .section-title {
+.report-section-item.is-active.section-title,
+.report-section-item.is-completed.section-title {
   color: #111827;
 }
 
@@ -1169,13 +1169,13 @@ watch(() => props.simulationId, (newId) => {
   color: #374151;
 }
 
-.generated-content :deep(p) {
+.generated-content:deep(p) {
   margin-bottom: 1em;
 }
 
-.generated-content :deep(.md-h2),
-.generated-content :deep(.md-h3),
-.generated-content :deep(.md-h4) {
+.generated-content:deep(.md-h2),
+.generated-content:deep(.md-h3),
+.generated-content:deep(.md-h4) {
   font-family: 'Times New Roman', Times, serif;
   color: #111827;
   margin-top: 1.5em;
@@ -1183,21 +1183,21 @@ watch(() => props.simulationId, (newId) => {
   font-weight: 700;
 }
 
-.generated-content :deep(.md-h2) { font-size: 20px; border-bottom: 1px solid #F3F4F6; padding-bottom: 8px; }
-.generated-content :deep(.md-h3) { font-size: 18px; }
-.generated-content :deep(.md-h4) { font-size: 16px; }
+.generated-content:deep(.md-h2) { font-size: 20px; border-bottom: 1px solid #F3F4F6; padding-bottom: 8px; }
+.generated-content:deep(.md-h3) { font-size: 18px; }
+.generated-content:deep(.md-h4) { font-size: 16px; }
 
-.generated-content :deep(.md-ul),
-.generated-content :deep(.md-ol) {
+.generated-content:deep(.md-ul),
+.generated-content:deep(.md-ol) {
   padding-left: 20px;
   margin-bottom: 1em;
 }
 
-.generated-content :deep(.md-li) {
+.generated-content:deep(.md-li) {
   margin-bottom: 0.5em;
 }
 
-.generated-content :deep(.md-quote) {
+.generated-content:deep(.md-quote) {
   border-left: 3px solid #E5E7EB;
   padding-left: 16px;
   margin: 1.5em 0;
@@ -1206,7 +1206,7 @@ watch(() => props.simulationId, (newId) => {
   font-family: 'Times New Roman', Times, serif;
 }
 
-.generated-content :deep(.code-block) {
+.generated-content:deep(.code-block) {
   background: #F9FAFB;
   padding: 12px;
   border-radius: 6px;
@@ -1217,7 +1217,7 @@ watch(() => props.simulationId, (newId) => {
   border: 1px solid #E5E7EB;
 }
 
-.generated-content :deep(strong) {
+.generated-content:deep(strong) {
   font-weight: 600;
   color: #111827;
 }
@@ -1252,7 +1252,7 @@ watch(() => props.simulationId, (newId) => {
 }
 
 /* Content Styles Override */
-.generated-content :deep(.md-h2) {
+.generated-content:deep(.md-h2) {
   font-family: 'Times New Roman', Times, serif;
   font-size: 18px;
   margin-top: 0;
@@ -1596,22 +1596,22 @@ watch(() => props.simulationId, (newId) => {
   flex-shrink: 0;
 }
 
-.tool-purple .tool-icon-wrapper {
+.tool-purple.tool-icon-wrapper {
   background: rgba(139, 92, 246, 0.1);
   color: #8B5CF6;
 }
 
-.tool-blue .tool-icon-wrapper {
+.tool-blue.tool-icon-wrapper {
   background: rgba(59, 130, 246, 0.1);
   color: #3B82F6;
 }
 
-.tool-orange .tool-icon-wrapper {
+.tool-orange.tool-icon-wrapper {
   background: rgba(249, 115, 22, 0.1);
   color: #F97316;
 }
 
-.tool-green .tool-icon-wrapper {
+.tool-green.tool-icon-wrapper {
   background: rgba(34, 197, 94, 0.1);
   color: #22C55E;
 }
@@ -1962,12 +1962,12 @@ watch(() => props.simulationId, (newId) => {
   flex-shrink: 0;
 }
 
-.chat-message.user .message-avatar {
+.chat-message.user.message-avatar {
   background: #1F2937;
   color: #FFFFFF;
 }
 
-.chat-message.assistant .message-avatar {
+.chat-message.assistant.message-avatar {
   background: #F3F4F6;
   color: #374151;
 }
@@ -1979,7 +1979,7 @@ watch(() => props.simulationId, (newId) => {
   gap: 6px;
 }
 
-.chat-message.user .message-content {
+.chat-message.user.message-content {
   align-items: flex-end;
 }
 
@@ -1989,7 +1989,7 @@ watch(() => props.simulationId, (newId) => {
   gap: 8px;
 }
 
-.chat-message.user .message-header {
+.chat-message.user.message-header {
   flex-direction: row-reverse;
 }
 
@@ -2011,45 +2011,45 @@ watch(() => props.simulationId, (newId) => {
   line-height: 1.5;
 }
 
-.chat-message.user .message-text {
+.chat-message.user.message-text {
   background: #1F2937;
   color: #FFFFFF;
   border-bottom-right-radius: 4px;
 }
 
-.chat-message.assistant .message-text {
+.chat-message.assistant.message-text {
   background: #F3F4F6;
   color: #374151;
   border-bottom-left-radius: 4px;
 }
 
-.message-text :deep(.md-p) {
+.message-text:deep(.md-p) {
   margin: 0;
 }
 
-.message-text :deep(.md-p:last-child) {
+.message-text:deep(.md-p:last-child) {
   margin-bottom: 0;
 }
 
-/* 修复有序列表编号 - 使用 CSS 计数器让多个 ol 连续编号 */
+/* list - CSS ol */
 .message-text {
   counter-reset: list-counter;
 }
 
-.message-text :deep(.md-ol) {
+.message-text:deep(.md-ol) {
   list-style: none;
   padding-left: 0;
   margin: 8px 0;
 }
 
-.message-text :deep(.md-oli) {
+.message-text:deep(.md-oli) {
   counter-increment: list-counter;
   display: flex;
   gap: 8px;
   margin: 4px 0;
 }
 
-.message-text :deep(.md-oli)::before {
+.message-text:deep(.md-oli)::before {
   content: counter(list-counter) ".";
   font-weight: 600;
   color: #374151;
@@ -2057,13 +2057,13 @@ watch(() => props.simulationId, (newId) => {
   flex-shrink: 0;
 }
 
-/* 无序列表样式 */
-.message-text :deep(.md-ul) {
+/* nonelist */
+.message-text:deep(.md-ul) {
   padding-left: 20px;
   margin: 8px 0;
 }
 
-.message-text :deep(.md-li) {
+.message-text:deep(.md-li) {
   margin: 4px 0;
 }
 
@@ -2189,7 +2189,7 @@ watch(() => props.simulationId, (newId) => {
   margin-bottom: 12px;
 }
 
-.setup-section .section-header .section-title {
+.setup-section.section-header.section-title {
   font-size: 13px;
   font-weight: 600;
   color: #374151;
@@ -2252,7 +2252,7 @@ watch(() => props.simulationId, (newId) => {
   flex-shrink: 0;
 }
 
-.agent-checkbox.checked .checkbox-avatar {
+.agent-checkbox.checked.checkbox-avatar {
   background: #10B981;
   color: #FFFFFF;
 }
@@ -2293,7 +2293,7 @@ watch(() => props.simulationId, (newId) => {
   transition: all 0.2s ease;
 }
 
-.agent-checkbox.checked .checkbox-indicator {
+.agent-checkbox.checked.checkbox-indicator {
   background: #10B981;
   border-color: #10B981;
   color: #FFFFFF;
@@ -2305,7 +2305,7 @@ watch(() => props.simulationId, (newId) => {
   transition: all 0.2s ease;
 }
 
-.agent-checkbox.checked .checkbox-indicator svg {
+.agent-checkbox.checked.checkbox-indicator svg {
   opacity: 1;
   transform: scale(1);
 }
@@ -2527,18 +2527,18 @@ watch(() => props.simulationId, (newId) => {
   margin: 12px 0 6px 0;
 }
 
-:deep(.md-ul), :deep(.md-ol) {
+:deep(.md-ul),:deep(.md-ol) {
   margin: 12px 0;
   padding-left: 24px;
 }
 
-:deep(.md-li), :deep(.md-oli) {
+:deep(.md-li),:deep(.md-oli) {
   margin: 6px 0;
 }
 
-/* 聊天/问卷区域的引用样式 */
-.chat-messages :deep(.md-quote),
-.result-answer :deep(.md-quote) {
+/* / */
+.chat-messages:deep(.md-quote),
+.result-answer:deep(.md-quote) {
   margin: 12px 0;
   padding: 12px 16px;
   background: #F9FAFB;
@@ -2578,7 +2578,7 @@ watch(() => props.simulationId, (newId) => {
 
 <style>
 /* English locale: smaller report title */
-html[lang="en"] .report-header-block .main-title {
+html[lang="en"].report-header-block.main-title {
   font-size: 28px;
 }
 </style>
