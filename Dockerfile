@@ -11,9 +11,9 @@ COPY --from=ghcr.io/astral-sh/uv:0.9.26 /uv /uvx /bin/
 WORKDIR /app
 
 # Copy dependency descriptor files first to use layer caching
-COPY package.json package-lock.json./
-COPY frontend/package.json frontend/package-lock.json./frontend/
-COPY backend/pyproject.toml backend/uv.lock./backend/
+COPY package.json package-lock.json ./
+COPY frontend/package.json frontend/package-lock.json ./frontend/
+COPY backend/pyproject.toml backend/uv.lock ./backend/
 
 # Install dependencies (Node + Python)
 RUN npm ci \
@@ -21,7 +21,7 @@ RUN npm ci \
   && cd backend && uv sync --frozen
 
 # Copy project source
-COPY..
+COPY . .
 
 EXPOSE 3000 5001
 
