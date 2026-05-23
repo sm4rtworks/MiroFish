@@ -1,89 +1,89 @@
 <template>
   <div 
     class="history-database"
-    :class="{ 'no-projects': projects.length === 0 && !loading }"
+:class="{ 'no-projects': projects.length === 0 &&!loading }"
     ref="historyContainer"
   >
-    <!-- 背景装饰：技术网格线（只在有项目时显示） -->
+    <!-- ：（project） -->
     <div v-if="projects.length > 0 || loading" class="tech-grid-bg">
       <div class="grid-pattern"></div>
       <div class="gradient-overlay"></div>
     </div>
 
-    <!-- 标题区域 -->
+    <!-- -->
     <div class="section-header">
       <div class="section-line"></div>
       <span class="section-title">{{ $t('history.title') }}</span>
       <div class="section-line"></div>
     </div>
 
-    <!-- 卡片容器（只在有项目时显示） -->
+    <!-- （project） -->
     <div v-if="projects.length > 0" class="cards-container" :class="{ expanded: isExpanded }" :style="containerStyle">
       <div 
         v-for="(project, index) in projects" 
-        :key="project.simulation_id"
+:key="project.simulation_id"
         class="project-card"
-        :class="{ expanded: isExpanded, hovering: hoveringCard === index }"
-        :style="getCardStyle(index)"
+:class="{ expanded: isExpanded, hovering: hoveringCard === index }"
+:style="getCardStyle(index)"
         @mouseenter="hoveringCard = index"
         @mouseleave="hoveringCard = null"
         @click="navigateToProject(project)"
       >
-        <!-- 卡片头部：simulation_id 和 功能可用状态 -->
+        <!-- ：simulation_id status -->
         <div class="card-header">
           <span class="card-id">{{ formatSimulationId(project.simulation_id) }}</span>
           <div class="card-status-icons">
             <span 
               class="status-icon" 
-              :class="{ available: project.project_id, unavailable: !project.project_id }"
-              :title="$t('history.graphBuild')"
+:class="{ available: project.project_id, unavailable:!project.project_id }"
+:title="$t('history.graphBuild')"
             >◇</span>
             <span 
               class="status-icon available" 
-              :title="$t('history.envSetup')"
+:title="$t('history.envSetup')"
             >◈</span>
             <span 
               class="status-icon" 
-              :class="{ available: project.report_id, unavailable: !project.report_id }"
-              :title="$t('history.analysisReport')"
+:class="{ available: project.report_id, unavailable:!project.report_id }"
+:title="$t('history.analysisReport')"
             >◆</span>
           </div>
         </div>
 
-        <!-- 文件列表区域 -->
+        <!-- filelist -->
         <div class="card-files-wrapper">
-          <!-- 角落装饰 - 取景框风格 -->
+          <!-- - -->
           <div class="corner-mark top-left-only"></div>
           
-          <!-- 文件列表 -->
+          <!-- filelist -->
           <div class="files-list" v-if="project.files && project.files.length > 0">
             <div 
               v-for="(file, fileIndex) in project.files.slice(0, 3)" 
-              :key="fileIndex"
+:key="fileIndex"
               class="file-item"
             >
               <span class="file-tag" :class="getFileType(file.filename)">{{ getFileTypeLabel(file.filename) }}</span>
               <span class="file-name">{{ truncateFilename(file.filename, 20) }}</span>
             </div>
-            <!-- 如果有更多文件，显示提示 -->
+            <!-- file， -->
             <div v-if="project.files.length > 3" class="files-more">
               {{ $t('history.moreFiles', { count: project.files.length - 3 }) }}
             </div>
           </div>
-          <!-- 无文件时的占位 -->
+          <!-- nonefile -->
           <div class="files-empty" v-else>
             <span class="empty-file-icon">◇</span>
             <span class="empty-file-text">{{ $t('history.noFiles') }}</span>
           </div>
         </div>
 
-        <!-- 卡片标题（使用模拟需求的前20字作为标题） -->
+        <!-- （simulation20） -->
         <h3 class="card-title">{{ getSimulationTitle(project.simulation_requirement) }}</h3>
 
-        <!-- 卡片描述（模拟需求完整展示） -->
+        <!-- （simulation） -->
         <p class="card-desc">{{ truncateText(project.simulation_requirement, 55) }}</p>
 
-        <!-- 卡片底部 -->
+        <!-- -->
         <div class="card-footer">
           <div class="card-datetime">
             <span class="card-date">{{ formatDate(project.created_at) }}</span>
@@ -94,23 +94,23 @@
           </span>
         </div>
         
-        <!-- 底部装饰线 (hover时展开) -->
+        <!-- (hover) -->
         <div class="card-bottom-line"></div>
       </div>
     </div>
 
-    <!-- 加载状态 -->
+    <!-- status -->
     <div v-if="loading" class="loading-state">
       <span class="loading-spinner"></span>
       <span class="loading-text">{{ $t('history.loadingText') }}</span>
     </div>
 
-    <!-- 历史回放详情弹窗 -->
+    <!-- -->
     <Teleport to="body">
       <Transition name="modal">
         <div v-if="selectedProject" class="modal-overlay" @click.self="closeModal">
           <div class="modal-content">
-            <!-- 弹窗头部 -->
+            <!-- -->
             <div class="modal-header">
               <div class="modal-title-section">
                 <span class="modal-id">{{ formatSimulationId(selectedProject.simulation_id) }}</span>
@@ -122,15 +122,15 @@
               <button class="modal-close" @click="closeModal">×</button>
             </div>
 
-            <!-- 弹窗内容 -->
+            <!-- content -->
             <div class="modal-body">
-              <!-- 模拟需求 -->
+              <!-- simulation -->
               <div class="modal-section">
                 <div class="modal-label">{{ $t('history.simRequirement') }}</div>
                 <div class="modal-requirement">{{ selectedProject.simulation_requirement || $t('common.none') }}</div>
               </div>
 
-              <!-- 文件列表 -->
+              <!-- filelist -->
               <div class="modal-section">
                 <div class="modal-label">{{ $t('history.relatedFiles') }}</div>
                 <div class="modal-files" v-if="selectedProject.files && selectedProject.files.length > 0">
@@ -143,19 +143,19 @@
               </div>
             </div>
 
-            <!-- 推演回放分割线 -->
+            <!-- -->
             <div class="modal-divider">
               <span class="divider-line"></span>
               <span class="divider-text">{{ $t('history.replayTitle') }}</span>
               <span class="divider-line"></span>
             </div>
 
-            <!-- 导航按钮 -->
+            <!-- -->
             <div class="modal-actions">
               <button 
                 class="modal-btn btn-project" 
                 @click="goToProject"
-                :disabled="!selectedProject.project_id"
+:disabled="!selectedProject.project_id"
               >
                 <span class="btn-step">Step1</span>
                 <span class="btn-icon">◇</span>
@@ -172,14 +172,14 @@
               <button 
                 class="modal-btn btn-report" 
                 @click="goToReport"
-                :disabled="!selectedProject.report_id"
+:disabled="!selectedProject.report_id"
               >
                 <span class="btn-step">Step4</span>
                 <span class="btn-icon">◆</span>
                 <span class="btn-text">{{ $t('history.step4Button') }}</span>
               </button>
             </div>
-            <!-- 不可回放提示 -->
+            <!-- -->
             <div class="modal-playback-hint">
               <span class="hint-text">{{ $t('history.replayHint') }}</span>
             </div>
@@ -200,56 +200,56 @@ const router = useRouter()
 const route = useRoute()
 const { t } = useI18n()
 
-// 状态
+// status
 const projects = ref([])
 const loading = ref(true)
 const isExpanded = ref(false)
 const hoveringCard = ref(null)
 const historyContainer = ref(null)
-const selectedProject = ref(null)  // 当前选中的项目（用于弹窗）
+const selectedProject = ref(null) // project（）
 let observer = null
-let isAnimating = false  // 动画锁，防止闪烁
-let expandDebounceTimer = null  // 防抖定时器
-let pendingState = null  // 记录待执行的目标状态
+let isAnimating = false // ，
+let expandDebounceTimer = null // 
+let pendingState = null // status
 
-// 卡片布局配置 - 调整为更宽的比例
+// configuration - 
 const CARDS_PER_ROW = 4
-const CARD_WIDTH = 280  
+const CARD_WIDTH = 280 
 const CARD_HEIGHT = 280 
 const CARD_GAP = 24
 
-// 动态计算容器高度样式
+// 
 const containerStyle = computed(() => {
   if (!isExpanded.value) {
-    // 折叠态：固定高度
+    // ：
     return { minHeight: '420px' }
   }
   
-  // 展开态：根据卡片数量动态计算高度
+  // ：count
   const total = projects.value.length
   if (total === 0) {
     return { minHeight: '280px' }
   }
   
   const rows = Math.ceil(total / CARDS_PER_ROW)
-  // 计算实际需要的高度：行数 * 卡片高度 + (行数-1) * 间距 + 少量底部间距
+  // ： * + (-1) * + 
   const expandedHeight = rows * CARD_HEIGHT + (rows - 1) * CARD_GAP + 10
   
   return { minHeight: `${expandedHeight}px` }
 })
 
-// 获取卡片样式
+// get
 const getCardStyle = (index) => {
   const total = projects.value.length
   
   if (isExpanded.value) {
-    // 展开态：网格布局
+    // ：
     const transition = 'transform 700ms cubic-bezier(0.23, 1, 0.32, 1), opacity 700ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease, border-color 0.3s ease'
 
     const col = index % CARDS_PER_ROW
     const row = Math.floor(index / CARDS_PER_ROW)
     
-    // 计算当前行的卡片数量，确保每行居中
+    // count，
     const currentRowStart = row * CARDS_PER_ROW
     const currentRowCards = Math.min(CARDS_PER_ROW, total - currentRowStart)
     
@@ -259,7 +259,7 @@ const getCardStyle = (index) => {
     const colInRow = index % CARDS_PER_ROW
     const x = startX + colInRow * (CARD_WIDTH + CARD_GAP)
     
-    // 向下展开，增加与标题的间距
+    // ，
     const y = 20 + row * (CARD_HEIGHT + CARD_GAP)
 
     return {
@@ -269,14 +269,14 @@ const getCardStyle = (index) => {
       transition: transition
     }
   } else {
-    // 折叠态：扇形堆叠
+    // ：
     const transition = 'transform 700ms cubic-bezier(0.23, 1, 0.32, 1), opacity 700ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease, border-color 0.3s ease'
 
     const centerIndex = (total - 1) / 2
     const offset = index - centerIndex
     
     const x = offset * 35
-    // 调整起始位置，靠近标题但保持适当间距
+    // ，
     const y = 25 + Math.abs(offset) * 8
     const r = offset * 3
     const s = 0.95 - Math.abs(offset) * 0.05
@@ -290,24 +290,24 @@ const getCardStyle = (index) => {
   }
 }
 
-// 根据轮数进度获取样式类
+// roundsget
 const getProgressClass = (simulation) => {
   const current = simulation.current_round || 0
   const total = simulation.total_rounds || 0
   
   if (total === 0 || current === 0) {
-    // 未开始
+    // 
     return 'not-started'
   } else if (current >= total) {
-    // 已完成
+    // completed
     return 'completed'
   } else {
-    // 进行中
+    // 
     return 'in-progress'
   }
 }
 
-// 格式化日期（只显示日期部分）
+// （）
 const formatDate = (dateStr) => {
   if (!dateStr) return ''
   try {
@@ -318,7 +318,7 @@ const formatDate = (dateStr) => {
   }
 }
 
-// 格式化时间（显示时:分）
+// （:）
 const formatTime = (dateStr) => {
   if (!dateStr) return ''
   try {
@@ -331,27 +331,27 @@ const formatTime = (dateStr) => {
   }
 }
 
-// 截断文本
+// 
 const truncateText = (text, maxLength) => {
   if (!text) return ''
-  return text.length > maxLength ? text.slice(0, maxLength) + '...' : text
+  return text.length > maxLength? text.slice(0, maxLength) + '...': text
 }
 
-// 从模拟需求生成标题（取前20字）
+// simulation（20）
 const getSimulationTitle = (requirement) => {
   if (!requirement) return t('history.untitledSimulation')
   const title = requirement.slice(0, 20)
-  return requirement.length > 20 ? title + '...' : title
+  return requirement.length > 20? title + '...': title
 }
 
-// 格式化 simulation_id 显示（截取前6位）
+// simulation_id （6）
 const formatSimulationId = (simulationId) => {
   if (!simulationId) return 'SIM_UNKNOWN'
   const prefix = simulationId.replace('sim_', '').slice(0, 6)
   return `SIM_${prefix.toUpperCase()}`
 }
 
-// 格式化轮数显示（当前轮/总轮数）
+// rounds（round/total rounds）
 const formatRounds = (simulation) => {
   const current = simulation.current_round || 0
   const total = simulation.total_rounds || 0
@@ -359,7 +359,7 @@ const formatRounds = (simulation) => {
   return t('history.roundsProgress', { current, total })
 }
 
-// 获取文件类型（用于样式）
+// getfiletype（）
 const getFileType = (filename) => {
   if (!filename) return 'other'
   const ext = filename.split('.').pop()?.toLowerCase()
@@ -375,35 +375,35 @@ const getFileType = (filename) => {
   return typeMap[ext] || 'other'
 }
 
-// 获取文件类型标签文本
+// getfiletype
 const getFileTypeLabel = (filename) => {
   if (!filename) return 'FILE'
   const ext = filename.split('.').pop()?.toUpperCase()
   return ext || 'FILE'
 }
 
-// 截断文件名（保留扩展名）
+// file（）
 const truncateFilename = (filename, maxLength) => {
   if (!filename) return t('history.unknownFile')
   if (filename.length <= maxLength) return filename
   
-  const ext = filename.includes('.') ? '.' + filename.split('.').pop() : ''
+  const ext = filename.includes('.')? '.' + filename.split('.').pop(): ''
   const nameWithoutExt = filename.slice(0, filename.length - ext.length)
   const truncatedName = nameWithoutExt.slice(0, maxLength - ext.length - 3) + '...'
   return truncatedName + ext
 }
 
-// 打开项目详情弹窗
+// project
 const navigateToProject = (simulation) => {
   selectedProject.value = simulation
 }
 
-// 关闭弹窗
+// close
 const closeModal = () => {
   selectedProject.value = null
 }
 
-// 导航到图谱构建页面（Project）
+// graph（Project）
 const goToProject = () => {
   if (selectedProject.value?.project_id) {
     router.push({
@@ -414,7 +414,7 @@ const goToProject = () => {
   }
 }
 
-// 导航到环境配置页面（Simulation）
+// environmentconfiguration（Simulation）
 const goToSimulation = () => {
   if (selectedProject.value?.simulation_id) {
     router.push({
@@ -425,7 +425,7 @@ const goToSimulation = () => {
   }
 }
 
-// 导航到分析报告页面（Report）
+// report（Report）
 const goToReport = () => {
   if (selectedProject.value?.report_id) {
     router.push({
@@ -436,7 +436,7 @@ const goToReport = () => {
   }
 }
 
-// 加载历史项目
+// project
 const loadHistory = async () => {
   try {
     loading.value = true
@@ -445,14 +445,14 @@ const loadHistory = async () => {
       projects.value = response.data || []
     }
   } catch (error) {
-    console.error('加载历史项目失败:', error)
+    console.error('projectfailed:', error)
     projects.value = []
   } finally {
     loading.value = false
   }
 }
 
-// 初始化 IntersectionObserver
+// initialize IntersectionObserver
 const initObserver = () => {
   if (observer) {
     observer.disconnect()
@@ -463,49 +463,49 @@ const initObserver = () => {
       entries.forEach((entry) => {
         const shouldExpand = entry.isIntersecting
         
-        // 更新待执行的目标状态（无论是否在动画中都要记录最新的目标状态）
+        // updatestatus（nonestatus）
         pendingState = shouldExpand
         
-        // 清除之前的防抖定时器（新的滚动意图会覆盖旧的）
+        // （）
         if (expandDebounceTimer) {
           clearTimeout(expandDebounceTimer)
           expandDebounceTimer = null
         }
         
-        // 如果正在动画中，只记录状态，等动画结束后处理
+        // ，status，
         if (isAnimating) return
         
-        // 如果目标状态与当前状态相同，不需要处理
+        // statusstatus，
         if (shouldExpand === isExpanded.value) {
           pendingState = null
           return
         }
         
-        // 使用防抖延迟状态切换，防止快速闪烁
-        // 展开时延迟较短(50ms)，收起时延迟较长(200ms)以增加稳定性
-        const delay = shouldExpand ? 50 : 200
+        // status，
+        // (50ms)，(200ms)
+        const delay = shouldExpand? 50: 200
         
         expandDebounceTimer = setTimeout(() => {
-          // 检查是否正在动画
+          // 
           if (isAnimating) return
           
-          // 检查待执行状态是否仍需要执行（可能已被后续滚动覆盖）
+          // status（）
           if (pendingState === null || pendingState === isExpanded.value) return
           
-          // 设置动画锁
+          // 
           isAnimating = true
           isExpanded.value = pendingState
           pendingState = null
           
-          // 动画完成后解除锁定，并检查是否有待处理的状态变化
+          // ，status
           setTimeout(() => {
             isAnimating = false
             
-            // 动画结束后，检查是否有新的待执行状态
-            if (pendingState !== null && pendingState !== isExpanded.value) {
-              // 延迟一小段时间再执行，避免太快切换
+            // ，status
+            if (pendingState!== null && pendingState!== isExpanded.value) {
+              // ，
               expandDebounceTimer = setTimeout(() => {
-                if (pendingState !== null && pendingState !== isExpanded.value) {
+                if (pendingState!== null && pendingState!== isExpanded.value) {
                   isAnimating = true
                   isExpanded.value = pendingState
                   pendingState = null
@@ -520,20 +520,20 @@ const initObserver = () => {
       })
     },
     {
-      // 使用多个阈值，使检测更平滑
+      // ，
       threshold: [0.4, 0.6, 0.8],
-      // 调整 rootMargin，视口底部向上收缩，需要滚动更多才触发展开
+      // rootMargin，，
       rootMargin: '0px 0px -150px 0px'
     }
   )
   
-  // 开始观察
+  // 
   if (historyContainer.value) {
     observer.observe(historyContainer.value)
   }
 }
 
-// 监听路由变化，当返回首页时重新加载数据
+// ，returndata
 watch(() => route.path, (newPath) => {
   if (newPath === '/') {
     loadHistory()
@@ -541,28 +541,28 @@ watch(() => route.path, (newPath) => {
 })
 
 onMounted(async () => {
-  // 确保 DOM 渲染完成后再加载数据
+  // DOM data
   await nextTick()
   await loadHistory()
   
-  // 等待 DOM 渲染后初始化观察器
+  // waiting DOM initialize
   setTimeout(() => {
     initObserver()
   }, 100)
 })
 
-// 如果使用 keep-alive，在组件激活时重新加载数据
+// keep-alive，data
 onActivated(() => {
   loadHistory()
 })
 
 onUnmounted(() => {
-  // 清理 Intersection Observer
+  // Intersection Observer
   if (observer) {
     observer.disconnect()
     observer = null
   }
-  // 清理防抖定时器
+  // 
   if (expandDebounceTimer) {
     clearTimeout(expandDebounceTimer)
     expandDebounceTimer = null
@@ -571,7 +571,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* 容器 */
+/* */
 .history-database {
   position: relative;
   width: 100%;
@@ -581,13 +581,13 @@ onUnmounted(() => {
   overflow: visible;
 }
 
-/* 无项目时简化显示 */
+/* noneproject */
 .history-database.no-projects {
   min-height: auto;
   padding: 40px 0 20px;
 }
 
-/* 技术网格背景 */
+/* */
 .tech-grid-bg {
   position: absolute;
   top: 0;
@@ -598,7 +598,7 @@ onUnmounted(() => {
   pointer-events: none;
 }
 
-/* 使用CSS背景图案创建固定间距的正方形网格 */
+/* CSScreate */
 .grid-pattern {
   position: absolute;
   top: 0;
@@ -609,7 +609,7 @@ onUnmounted(() => {
     linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
   background-size: 50px 50px;
-  /* 从左上角开始定位，高度变化时只在底部扩展，不影响已有网格位置 */
+  /* ，， */
   background-position: top left;
 }
 
@@ -625,7 +625,7 @@ onUnmounted(() => {
   pointer-events: none;
 }
 
-/* 标题区域 */
+/* */
 .section-header {
   position: relative;
   z-index: 100;
@@ -653,7 +653,7 @@ onUnmounted(() => {
   text-transform: uppercase;
 }
 
-/* 卡片容器 */
+/* */
 .cards-container {
   position: relative;
   display: flex;
@@ -661,10 +661,10 @@ onUnmounted(() => {
   align-items: flex-start;
   padding: 0 40px;
   transition: min-height 700ms cubic-bezier(0.23, 1, 0.32, 1);
-  /* min-height 由 JS 动态计算，根据卡片数量自适应 */
+  /* min-height JS ，count */
 }
 
-/* 项目卡片 */
+/* project */
 .project-card {
   position: absolute;
   width: 280px;
@@ -680,14 +680,14 @@ onUnmounted(() => {
 .project-card:hover {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   border-color: rgba(0, 0, 0, 0.4);
-  z-index: 1000 !important;
+  z-index: 1000!important;
 }
 
 .project-card.hovering {
-  z-index: 1000 !important;
+  z-index: 1000!important;
 }
 
-/* 卡片头部 */
+/* */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -705,7 +705,7 @@ onUnmounted(() => {
   font-weight: 500;
 }
 
-/* 功能状态图标组 */
+/* status */
 .card-status-icons {
   display: flex;
   align-items: center;
@@ -722,17 +722,17 @@ onUnmounted(() => {
   opacity: 1;
 }
 
-/* 不同功能的颜色 */
-.status-icon:nth-child(1).available { color: #3B82F6; } /* 图谱构建 - 蓝色 */
-.status-icon:nth-child(2).available { color: #F59E0B; } /* 环境搭建 - 橙色 */
-.status-icon:nth-child(3).available { color: #10B981; } /* 分析报告 - 绿色 */
+/* */
+.status-icon:nth-child(1).available { color: #3B82F6; } /* graph - */
+.status-icon:nth-child(2).available { color: #F59E0B; } /* environment - */
+.status-icon:nth-child(3).available { color: #10B981; } /* report - */
 
 .status-icon.unavailable {
   color: #D1D5DB;
   opacity: 0.5;
 }
 
-/* 轮数进度显示 */
+/* rounds */
 .card-progress {
   display: flex;
   align-items: center;
@@ -746,13 +746,13 @@ onUnmounted(() => {
   font-size: 0.5rem;
 }
 
-/* 进度状态颜色 */
-.card-progress.completed { color: #10B981; }    /* 已完成 - 绿色 */
-.card-progress.in-progress { color: #F59E0B; }  /* 进行中 - 橙色 */
-.card-progress.not-started { color: #9CA3AF; }  /* 未开始 - 灰色 */
+/* status */
+.card-progress.completed { color: #10B981; } /* completed - */
+.card-progress.in-progress { color: #F59E0B; } /* - */
+.card-progress.not-started { color: #9CA3AF; } /* - */
 .card-status.pending { color: #9CA3AF; }
 
-/* 文件列表区域 */
+/* filelist */
 .card-files-wrapper {
   position: relative;
   width: 100%;
@@ -772,7 +772,7 @@ onUnmounted(() => {
   gap: 4px;
 }
 
-/* 更多文件提示 */
+/* file */
 .files-more {
   display: flex;
   align-items: center;
@@ -802,7 +802,7 @@ onUnmounted(() => {
   border-color: #e5e7eb;
 }
 
-/* 简约文件标签样式 */
+/* file */
 .file-tag {
   display: inline-flex;
   align-items: center;
@@ -820,7 +820,7 @@ onUnmounted(() => {
   min-width: 28px;
 }
 
-/* 低饱和度配色方案 - Morandi色系 */
+/* - Morandi */
 .file-tag.pdf { background: #f2e6e6; color: #a65a5a; }
 .file-tag.doc { background: #e6eff5; color: #5a7ea6; }
 .file-tag.xls { background: #e6f2e8; color: #5aa668; }
@@ -841,7 +841,7 @@ onUnmounted(() => {
   letter-spacing: 0.1px;
 }
 
-/* 无文件时的占位 */
+/* nonefile */
 .files-empty {
   display: flex;
   align-items: center;
@@ -862,13 +862,13 @@ onUnmounted(() => {
   letter-spacing: 0.5px;
 }
 
-/* 悬停时文件区域效果 */
-.project-card:hover .card-files-wrapper {
+/* file */
+.project-card:hover.card-files-wrapper {
   border-color: #d1d5db;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
 }
 
-/* 角落装饰 */
+/* */
 .corner-mark.top-left-only {
   position: absolute;
   top: 6px;
@@ -881,7 +881,7 @@ onUnmounted(() => {
   z-index: 10;
 }
 
-/* 卡片标题 */
+/* */
 .card-title {
   font-family: 'Inter', -apple-system, sans-serif;
   font-size: 0.9rem;
@@ -895,11 +895,11 @@ onUnmounted(() => {
   transition: color 0.3s ease;
 }
 
-.project-card:hover .card-title {
+.project-card:hover.card-title {
   color: #2563EB;
 }
 
-/* 卡片描述 */
+/* */
 .card-desc {
   font-family: 'Inter', sans-serif;
   font-size: 0.75rem;
@@ -913,7 +913,7 @@ onUnmounted(() => {
   -webkit-box-orient: vertical;
 }
 
-/* 卡片底部 */
+/* */
 .card-footer {
   position: relative;
   display: flex;
@@ -927,15 +927,15 @@ onUnmounted(() => {
   font-weight: 500;
 }
 
-/* 日期时间组合 */
+/* */
 .card-datetime {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* 底部轮数进度显示 */
-.card-footer .card-progress {
+/* rounds */
+.card-footer.card-progress {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -944,16 +944,16 @@ onUnmounted(() => {
   font-size: 0.65rem;
 }
 
-.card-footer .status-dot {
+.card-footer.status-dot {
   font-size: 0.5rem;
 }
 
-/* 进度状态颜色 - 底部 */
-.card-footer .card-progress.completed { color: #10B981; }
-.card-footer .card-progress.in-progress { color: #F59E0B; }
-.card-footer .card-progress.not-started { color: #9CA3AF; }
+/* status - */
+.card-footer.card-progress.completed { color: #10B981; }
+.card-footer.card-progress.in-progress { color: #F59E0B; }
+.card-footer.card-progress.not-started { color: #9CA3AF; }
 
-/* 底部装饰线 */
+/* */
 .card-bottom-line {
   position: absolute;
   bottom: 0;
@@ -965,12 +965,12 @@ onUnmounted(() => {
   z-index: 20;
 }
 
-.project-card:hover .card-bottom-line {
+.project-card:hover.card-bottom-line {
   width: 100%;
 }
 
-/* 空状态 */
-.empty-state, .loading-state {
+/* status */
+.empty-state,.loading-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -997,23 +997,23 @@ onUnmounted(() => {
   to { transform: rotate(360deg); }
 }
 
-/* 响应式 */
+/* */
 @media (max-width: 1200px) {
-  .project-card {
+.project-card {
     width: 240px;
   }
 }
 
 @media (max-width: 768px) {
-  .cards-container {
+.cards-container {
     padding: 0 20px;
   }
-  .project-card {
+.project-card {
     width: 200px;
   }
 }
 
-/* ===== 历史回放详情弹窗样式 ===== */
+/* ===== ===== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -1039,7 +1039,7 @@ onUnmounted(() => {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* 动画过渡 */
+/* */
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.3s ease;
@@ -1050,25 +1050,25 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-.modal-enter-active .modal-content {
+.modal-enter-active.modal-content {
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.modal-leave-active .modal-content {
+.modal-leave-active.modal-content {
   transition: all 0.2s ease-in;
 }
 
-.modal-enter-from .modal-content {
+.modal-enter-from.modal-content {
   transform: scale(0.95) translateY(10px);
   opacity: 0;
 }
 
-.modal-leave-to .modal-content {
+.modal-leave-to.modal-content {
   transform: scale(0.95) translateY(10px);
   opacity: 0;
 }
 
-/* 弹窗头部 */
+/* */
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -1135,7 +1135,7 @@ onUnmounted(() => {
   color: #111827;
 }
 
-/* 弹窗内容 */
+/* content */
 .modal-body {
   padding: 24px 32px;
 }
@@ -1177,7 +1177,7 @@ onUnmounted(() => {
   padding-right: 4px;
 }
 
-/* 自定义滚动条样式 */
+/* */
 .modal-files::-webkit-scrollbar {
   width: 4px;
 }
@@ -1231,7 +1231,7 @@ onUnmounted(() => {
   text-align: center;
 }
 
-/* 推演回放分割线 */
+/* */
 .modal-divider {
   display: flex;
   align-items: center;
@@ -1255,7 +1255,7 @@ onUnmounted(() => {
   white-space: nowrap;
 }
 
-/* 导航按钮 */
+/* */
 .modal-actions {
   display: flex;
   gap: 16px;
@@ -1314,15 +1314,15 @@ onUnmounted(() => {
   color: #4B5563;
 }
 
-.modal-btn.btn-project .btn-icon { color: #3B82F6; }
-.modal-btn.btn-simulation .btn-icon { color: #F59E0B; }
-.modal-btn.btn-report .btn-icon { color: #10B981; }
+.modal-btn.btn-project.btn-icon { color: #3B82F6; }
+.modal-btn.btn-simulation.btn-icon { color: #F59E0B; }
+.modal-btn.btn-report.btn-icon { color: #10B981; }
 
-.modal-btn:hover:not(:disabled) .btn-text {
+.modal-btn:hover:not(:disabled).btn-text {
   color: #111827;
 }
 
-/* 不可回放提示 */
+/* */
 .modal-playback-hint {
   display: flex;
   align-items: center;

@@ -4,7 +4,7 @@
 
 <a href="https://trendshift.io/repositories/16144" target="_blank"><img src="https://trendshift.io/api/badge/repositories/16144" alt="666ghj%2FMiroFish | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
-简洁通用的群体智能引擎，预测万物
+%E7%AE%80%E6%B4%81%E9%80%9A%E7%94%A8%E7%9A%84%E7%BE%A4%E4%BD%93%E6%99%BA%E8%83%BD%E5%BC%95%E6%93%8E，%E9%A2%84%E6%B5%8B%E4%B8%87%E7%89%A9
 </br>
 <em>A Simple and Universal Swarm Intelligence Engine, Predicting Anything</em>
 
@@ -20,7 +20,7 @@
 [![X](https://img.shields.io/badge/X-Follow-000000?style=flat-square&logo=x&logoColor=white)](https://x.com/mirofish_ai)
 [![Instagram](https://img.shields.io/badge/Instagram-Follow-E4405F?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/mirofish_ai/)
 
-[English](./README.md) | [中文文档](./README-ZH.md)
+[English](./README.md) | [%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3](./README-ZH.md)
 
 </div>
 
@@ -49,16 +49,16 @@ Welcome to visit our online demo environment and experience a prediction simulat
 <div align="center">
 <table>
 <tr>
-<td><img src="./static/image/Screenshot/运行截图1.png" alt="Screenshot 1" width="100%"/></td>
-<td><img src="./static/image/Screenshot/运行截图2.png" alt="Screenshot 2" width="100%"/></td>
+<td><img src="./static/image/Screenshot/%E8%BF%90%E8%A1%8C%E6%88%AA%E5%9B%BE1.png" alt="Screenshot 1" width="100%"/></td>
+<td><img src="./static/image/Screenshot/%E8%BF%90%E8%A1%8C%E6%88%AA%E5%9B%BE2.png" alt="Screenshot 2" width="100%"/></td>
 </tr>
 <tr>
-<td><img src="./static/image/Screenshot/运行截图3.png" alt="Screenshot 3" width="100%"/></td>
-<td><img src="./static/image/Screenshot/运行截图4.png" alt="Screenshot 4" width="100%"/></td>
+<td><img src="./static/image/Screenshot/%E8%BF%90%E8%A1%8C%E6%88%AA%E5%9B%BE3.png" alt="Screenshot 3" width="100%"/></td>
+<td><img src="./static/image/Screenshot/%E8%BF%90%E8%A1%8C%E6%88%AA%E5%9B%BE4.png" alt="Screenshot 4" width="100%"/></td>
 </tr>
 <tr>
-<td><img src="./static/image/Screenshot/运行截图5.png" alt="Screenshot 5" width="100%"/></td>
-<td><img src="./static/image/Screenshot/运行截图6.png" alt="Screenshot 6" width="100%"/></td>
+<td><img src="./static/image/Screenshot/%E8%BF%90%E8%A1%8C%E6%88%AA%E5%9B%BE5.png" alt="Screenshot 5" width="100%"/></td>
+<td><img src="./static/image/Screenshot/%E8%BF%90%E8%A1%8C%E6%88%AA%E5%9B%BE6.png" alt="Screenshot 6" width="100%"/></td>
 </tr>
 </table>
 </div>
@@ -68,7 +68,7 @@ Welcome to visit our online demo environment and experience a prediction simulat
 ### 1. Wuhan University Public Opinion Simulation + MiroFish Project Introduction
 
 <div align="center">
-<a href="https://www.bilibili.com/video/BV1VYBsBHEMY/" target="_blank"><img src="./static/image/武大模拟演示封面.png" alt="MiroFish Demo Video" width="75%"/></a>
+<a href="https://www.bilibili.com/video/BV1VYBsBHEMY/" target="_blank"><img src="./static/image/%E6%AD%A6%E5%A4%A7%E6%A8%A1%E6%8B%9F%E6%BC%94%E7%A4%BA%E5%B0%81%E9%9D%A2.png" alt="MiroFish Demo Video" width="75%"/></a>
 
 Click the image to watch the complete demo video for prediction using BettaFish-generated "Wuhan University Public Opinion Report"
 </div>
@@ -76,7 +76,7 @@ Click the image to watch the complete demo video for prediction using BettaFish-
 ### 2. Dream of the Red Chamber Lost Ending Simulation
 
 <div align="center">
-<a href="https://www.bilibili.com/video/BV1cPk3BBExq" target="_blank"><img src="./static/image/红楼梦模拟推演封面.jpg" alt="MiroFish Demo Video" width="75%"/></a>
+<a href="https://www.bilibili.com/video/BV1cPk3BBExq" target="_blank"><img src="./static/image/%E7%BA%A2%E6%A5%BC%E6%A2%A6%E6%A8%A1%E6%8B%9F%E6%8E%A8%E6%BC%94%E5%B0%81%E9%9D%A2.jpg" alt="MiroFish Demo Video" width="75%"/></a>
 
 Click the image to watch MiroFish's deep prediction of the lost ending based on hundreds of thousands of words from the first 80 chapters of "Dream of the Red Chamber"
 </div>
@@ -107,9 +107,9 @@ Click the image to watch MiroFish's deep prediction of the lost ending based on 
 
 ```bash
 # Copy the example configuration file
-cp .env.example .env
+cp.env.example.env
 
-# Edit the .env file and fill in the required API keys
+# Edit the.env file and fill in the required API keys
 ```
 
 **Required Environment Variables:**
@@ -158,15 +158,15 @@ npm run dev
 **Start Individually:**
 
 ```bash
-npm run backend   # Start backend only
-npm run frontend  # Start frontend only
+npm run backend # Start backend only
+npm run frontend # Start frontend only
 ```
 
 ### Option 2: Docker Deployment
 
 ```bash
 # 1. Configure environment variables (same as source deployment)
-cp .env.example .env
+cp.env.example.env
 
 # 2. Pull image and start
 docker compose up -d
@@ -179,7 +179,7 @@ Reads `.env` from root directory by default, maps ports `3000 (frontend) / 5001 
 ## 📬 Join the Conversation
 
 <div align="center">
-<img src="./static/image/QQ群.png" alt="QQ Group" width="60%"/>
+<img src="./static/image/QQ%E7%BE%A4.png" alt="QQ Group" width="60%"/>
 </div>
 
 &nbsp;

@@ -31,7 +31,7 @@
           <div v-if="selectedOntologyItem" class="ontology-detail-overlay">
             <div class="detail-header">
                <div class="detail-title-group">
-                  <span class="detail-type-badge">{{ selectedOntologyItem.itemType === 'entity' ? 'ENTITY' : 'RELATION' }}</span>
+                  <span class="detail-type-badge">{{ selectedOntologyItem.itemType === 'entity'? 'ENTITY': 'RELATION' }}</span>
                   <span class="detail-name">{{ selectedOntologyItem.name }}</span>
                </div>
                <button class="close-btn" @click="selectedOntologyItem = null">×</button>
@@ -79,7 +79,7 @@
             <div class="tags-list">
               <span 
                 v-for="entity in projectData.ontology.entity_types" 
-                :key="entity.name" 
+:key="entity.name" 
                 class="entity-tag clickable"
                 @click="selectOntologyItem(entity, 'entity')"
               >
@@ -94,7 +94,7 @@
             <div class="tags-list">
               <span 
                 v-for="rel in projectData.ontology.edge_types" 
-                :key="rel.name" 
+:key="rel.name" 
                 class="entity-tag clickable"
                 @click="selectOntologyItem(rel, 'relation')"
               >
@@ -160,11 +160,11 @@
           <p class="description">{{ $t('step1.buildCompleteDesc') }}</p>
           <button 
             class="action-btn" 
-            :disabled="currentPhase < 2 || creatingSimulation"
+:disabled="currentPhase < 2 || creatingSimulation"
             @click="handleEnterEnvSetup"
           >
             <span v-if="creatingSimulation" class="spinner-sm"></span>
-            {{ creatingSimulation ? $t('step1.creating') : $t('step1.enterEnvSetup') + ' ➝' }}
+            {{ creatingSimulation? $t('step1.creating'): $t('step1.enterEnvSetup') + ' ➝' }}
           </button>
         </div>
       </div>
@@ -210,10 +210,10 @@ const selectedOntologyItem = ref(null)
 const logContent = ref(null)
 const creatingSimulation = ref(false)
 
-// 进入环境搭建 - 创建 simulation 并跳转
+// environment - create simulation 
 const handleEnterEnvSetup = async () => {
-  if (!props.projectData?.project_id || !props.projectData?.graph_id) {
-    console.error('缺少项目或图谱信息')
+  if (!props.projectData?.project_id ||!props.projectData?.graph_id) {
+    console.error('projectgraph')
     return
   }
   
@@ -228,17 +228,17 @@ const handleEnterEnvSetup = async () => {
     })
     
     if (res.success && res.data?.simulation_id) {
-      // 跳转到 simulation 页面
+      // simulation 
       router.push({
         name: 'Simulation',
         params: { simulationId: res.data.simulation_id }
       })
     } else {
-      console.error('创建模拟失败:', res.error)
+      console.error('createsimulationfailed:', res.error)
       alert(t('step1.createSimulationFailed', { error: res.error || t('common.unknownError') }))
     }
   } catch (err) {
-    console.error('创建模拟异常:', err)
+    console.error('createsimulation:', err)
     alert(t('step1.createSimulationException', { error: err.message }))
   } finally {
     creatingSimulation.value = false
@@ -246,7 +246,7 @@ const handleEnterEnvSetup = async () => {
 }
 
 const selectOntologyItem = (item, type) => {
-  selectedOntologyItem.value = { ...item, itemType: type }
+  selectedOntologyItem.value = {...item, itemType: type }
 }
 
 const graphStats = computed(() => {
@@ -326,8 +326,8 @@ watch(() => props.systemLogs.length, () => {
   color: #E0E0E0;
 }
 
-.step-card.active .step-num,
-.step-card.completed .step-num {
+.step-card.active.step-num,
+.step-card.completed.step-num {
   color: #000;
 }
 
@@ -501,7 +501,7 @@ watch(() => props.systemLogs.length, () => {
     margin-bottom: 8px;
 }
 
-.attr-list, .conn-list {
+.attr-list,.conn-list {
     display: flex;
     flex-direction: column;
     gap: 6px;

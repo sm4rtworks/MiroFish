@@ -10,9 +10,9 @@
         <div class="view-switcher">
           <button 
             v-for="mode in ['graph', 'split', 'workbench']" 
-            :key="mode"
+:key="mode"
             class="switch-btn"
-            :class="{ active: viewMode === mode }"
+:class="{ active: viewMode === mode }"
             @click="viewMode = mode"
           >
             {{ { graph: $t('main.layoutGraph'), split: $t('main.layoutSplit'), workbench: $t('main.layoutWorkbench') }[mode] }}
@@ -40,9 +40,9 @@
       <!-- Left Panel: Graph -->
       <div class="panel-wrapper left" :style="leftPanelStyle">
         <GraphPanel 
-          :graphData="graphData"
-          :loading="graphLoading"
-          :currentPhase="currentPhase"
+:graphData="graphData"
+:loading="graphLoading"
+:currentPhase="currentPhase"
           @refresh="refreshGraph"
           @toggle-maximize="toggleMaximize('graph')"
         />
@@ -50,23 +50,23 @@
 
       <!-- Right Panel: Step Components -->
       <div class="panel-wrapper right" :style="rightPanelStyle">
-        <!-- Step 1: 图谱构建 -->
+        <!-- Step 1: graph -->
         <Step1GraphBuild 
           v-if="currentStep === 1"
-          :currentPhase="currentPhase"
-          :projectData="projectData"
-          :ontologyProgress="ontologyProgress"
-          :buildProgress="buildProgress"
-          :graphData="graphData"
-          :systemLogs="systemLogs"
+:currentPhase="currentPhase"
+:projectData="projectData"
+:ontologyProgress="ontologyProgress"
+:buildProgress="buildProgress"
+:graphData="graphData"
+:systemLogs="systemLogs"
           @next-step="handleNextStep"
         />
-        <!-- Step 2: 环境搭建 -->
+        <!-- Step 2: environment -->
         <Step2EnvSetup
           v-else-if="currentStep === 2"
-          :projectData="projectData"
-          :graphData="graphData"
-          :systemLogs="systemLogs"
+:projectData="projectData"
+:graphData="graphData"
+:systemLogs="systemLogs"
           @go-back="handleGoBack"
           @next-step="handleNextStep"
           @add-log="addLog"
@@ -95,7 +95,7 @@ const { t, tm } = useI18n()
 const viewMode = ref('split') // graph | split | workbench
 
 // Step State
-const currentStep = ref(1) // 1: 图谱构建, 2: 环境搭建, 3: 开始模拟, 4: 报告生成, 5: 深度互动
+const currentStep = ref(1) // 1: graph, 2: environment, 3: simulation, 4: report, 5: 
 const stepNames = computed(() => tm('main.stepNames'))
 
 // Data State
@@ -166,7 +166,7 @@ const handleNextStep = (params = {}) => {
     currentStep.value++
     addLog(t('log.enterStep', { step: currentStep.value, name: stepNames.value[currentStep.value - 1] }))
     
-    // 如果是从 Step 2 进入 Step 3，记录模拟轮数配置
+    // Step 2 Step 3，simulationroundsconfiguration
     if (currentStep.value === 3 && params.maxRounds) {
       addLog(t('log.customSimRounds', { rounds: params.maxRounds }))
     }
@@ -241,7 +241,7 @@ const loadProject = async () => {
       updatePhaseByStatus(res.data.status)
       addLog(`Project loaded. Status: ${res.data.status}`)
       
-      if (res.data.status === 'ontology_generated' && !res.data.graph_id) {
+      if (res.data.status === 'ontology_generated' &&!res.data.graph_id) {
         await startBuildGraph()
       } else if (res.data.status === 'graph_building' && res.data.graph_build_task_id) {
         currentPhase.value = 1
@@ -330,7 +330,7 @@ const pollTaskStatus = async (taskId) => {
       const task = res.data
       
       // Log progress message if it changed
-      if (task.message && task.message !== buildProgress.value?.message) {
+      if (task.message && task.message!== buildProgress.value?.message) {
         addLog(task.message)
       }
       
